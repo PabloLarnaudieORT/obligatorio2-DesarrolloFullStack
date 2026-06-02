@@ -1,7 +1,7 @@
 import joi from "joi";
 
 export const crearCategoriaZonaMuscularSchema = joi.object({
-    nombreCategoriaZonaMuscular: joi.string()
+    nombreCategoriaZona: joi.string()
         .min(3)
         .max(50)
         .required()

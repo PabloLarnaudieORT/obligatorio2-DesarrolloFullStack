@@ -27,24 +27,6 @@ const AdminMenuHamburguesa = ({ menuAbierto }) => {
             Gestionar Desafíos
           </NavLink>
         </li>
-
-        <li>
-          <NavLink
-            to="/gestionar-productos"
-            className="text-decoration-none text-reset"
-          >
-            Gestionar Productos
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink
-            to="/gestion-usuarios"
-            className="text-decoration-none text-reset"
-          >
-            Gestionar Usuarios
-          </NavLink>
-        </li>
       </ul>
     </nav>
   );

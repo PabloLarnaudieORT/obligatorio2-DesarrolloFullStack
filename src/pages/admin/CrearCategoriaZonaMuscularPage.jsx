@@ -1,4 +1,4 @@
-﻿import CrearCategoriaZonaMuscularPageForm from "../../components/admin/formularios/CrearCategoriaZonaMuscularForm";
+﻿import CrearCategoriaZonaMuscularPageForm from "../../components/admin/formularios/cateogirasZonaMuscular/CrearCategoriaZonaMuscularForm";
 
 const CrearCategoriaZonaMuscularPage = () => {
   return (
