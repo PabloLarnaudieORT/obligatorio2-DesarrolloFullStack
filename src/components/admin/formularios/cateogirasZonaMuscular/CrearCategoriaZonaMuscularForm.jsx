@@ -83,11 +83,13 @@ const CrearCategoriaZonaMuscularForm = () => {
           </div>
 
           <BotonDinamico
+            type="submit"
+            class="btn btn-primary"
             isDirty={isDirty}
             isValid={isValid}
             isSubmitting={isSubmitting}
           >
-            Crear Categoría
+            Crear Categoría Zona Muscular
           </BotonDinamico>
           {loading && <p>Creando categoría...</p>}
           {error && <p className="text-danger mt-1">{error}</p>}

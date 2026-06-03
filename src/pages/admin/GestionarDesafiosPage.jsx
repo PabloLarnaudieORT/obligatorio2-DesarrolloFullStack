@@ -1,5 +1,5 @@
 ﻿import CampoBusquedaCategoriaZonaMuscular from "../../components/busqueda/CampoBusqueda";
-import GestionarDesafioTabla from "../../components/tablas/GestionarDesafioTabla";
+import GestionarDesafioTabla from "../../components/tablas/admin/GestionarDesafioTabla";
 import CrearDesafioForm from "../../components/admin/formularios/desafios/CrearDesafioForm";
 
 const GestionarDesafiosPage = () => {

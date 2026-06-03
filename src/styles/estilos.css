@@ -476,6 +476,7 @@ li:hover {
   color: #666;
 }
 
+
 .btn-principal:disabled {
   opacity: 0.65;
   cursor: not-allowed;
@@ -487,33 +488,45 @@ li:hover {
   color: var(--blanco);
 }
 
+input.form-control, 
+select.form-select {
+  color: #333 !important;
+}
+
+.campo::placeholder {
+  color: #e0e0e0 !important; 
+}
+
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
 }
 
 .modal-contenido {
   position: relative;
-  width: min(720px, calc(100vw - 32px));
-  max-height: calc(100vh - 48px);
-  overflow-y: auto;
+  width: min(620px, 100%);
+}
+
+.modal-contenido .tarjeta {
+  max-width: 100% !important;
 }
 
 .modal-cerrar {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  background: transparent;
+  top: 14px;
+  right: 18px;
+  z-index: 2;
   border: 0;
-  color: white;
-  font-size: 1.5rem;
+  background: transparent;
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: 700;
   cursor: pointer;
-  z-index: 1;
 }

@@ -5,7 +5,7 @@ const AdminMenuHamburguesa = ({ menuAbierto }) => {
     <nav className={menuAbierto ? "sidebar" : "sidebar sidebar-cerrada"} aria-label="Menú administrador">
       <ul className="list-unstyled">
         <li>
-          <NavLink to="/" className="text-decoration-none text-reset">
+          <NavLink to="/admin" className="text-decoration-none text-reset">
             Inicio
           </NavLink>
         </li>
@@ -33,4 +33,3 @@ const AdminMenuHamburguesa = ({ menuAbierto }) => {
 };
 
 export default AdminMenuHamburguesa;
-
