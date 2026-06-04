@@ -11,6 +11,7 @@ import api from "../../api/api";
 
 const VerEjerciciosTabla = () => {
   const [pagina, setPagina] = useState(1);
+  const [totalPaginas, setTotalPaginas] = useState(0);
   const dispatch = useDispatch();
 
   const [ejercicioSeleccionado, setEjercicioSeleccionado] = useState(null);
@@ -27,12 +28,16 @@ const VerEjerciciosTabla = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await api.get("/ejercicios", {
+      const res = await api.get(`/ejercicios?page=${pagina}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("VerEjercicioTabla > obtenerListaDeEjercicios > res.data: ", res.data);
+      setTotalPaginas(res.data.ejercicios.totalPages);
+      console.log(
+        "VerEjercicioTabla > obtenerListaDeEjercicios > res.data: ",
+        res.data,
+      );
       dispatch(obtenerEjerciciosSuccess(res.data.ejercicios.ejercicios));
     } catch (error) {
       dispatch(
@@ -45,7 +50,7 @@ const VerEjerciciosTabla = () => {
 
   useEffect(() => {
     obtenerListaDeEjercicios();
-  }, []);
+  }, [pagina]);
 
   return (
     <>
@@ -120,10 +125,10 @@ const VerEjerciciosTabla = () => {
           </table>
         </div>
         <Paginacion
-        paginaActual={pagina}
-        totalPaginas={5} // Este número será dinámico cuando conectes con la API
-        onCambiarPagina={setPagina}
-      />
+          paginaActual={pagina}
+          totalPaginas={totalPaginas}
+          onCambiarPagina={setPagina}
+        />
       </div>
       {ejercicioSeleccionado && (
         //Esto es para mostrar el formulario de edición, y le paso el desafío seleccionado
