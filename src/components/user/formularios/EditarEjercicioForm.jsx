@@ -6,7 +6,6 @@ import {
   editarEjerciciosError,
   editarEjerciciosStart,
   editarEjerciciosSuccess,
-  obtenerEjerciciosSuccess,
 } from "../../../features/userLogic/ejercicios/ejerciciosSlice";
 import DropdownCategoriaMuscular from "../../../components/dropdowns/DropdownCategoriaMuscular";
 import api from "../../../api/api";
@@ -22,7 +21,6 @@ const EditarEjercicioForm = ({ ejercicio, onEditado }) => {
   const seriesId = useId();
   const repeticionesId = useId();
 
-  //usamos a JOI para validar el formulario en tiempo real, y react-hook-form para manejar el estado del mismo.
   const {
     register,
     handleSubmit,
