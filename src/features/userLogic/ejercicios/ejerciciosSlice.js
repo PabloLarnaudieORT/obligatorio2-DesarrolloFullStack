@@ -21,7 +21,7 @@ const ejerciciosSlice = createSlice({
 
     obtenerEjerciciosSuccess: (state, action) => {
       state.loading = false;
-      state.ejerciciosObtenidos = action.payload;
+      state.listaDeEjercicios = action.payload;
       state.successMessage = null;
       state.error = null;
     },
@@ -61,7 +61,7 @@ const ejerciciosSlice = createSlice({
       state.ejercicioEditado = action.payload;
 
       //Esto sirve para actualizar la lista de ejercicios obtenidos en la tabla después de editar un ejercicio, sin necesidad de volver a hacer la petición para obtener todos los ejercicios.
-      state.ejerciciosObtenidos = state.ejerciciosObtenidos.map((ejercicio) =>
+      state.listaDeEjercicios = state.listaDeEjercicios.map((ejercicio) =>
         ejercicio._id === action.payload._id ? action.payload : ejercicio,
       );
 
