@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   ejercicio: {},
-  ejerciciosObtenidos: [],
+  listaDeEjercicios: [],
   ejercicioEditado: null,
   loading: false,
   error: null,

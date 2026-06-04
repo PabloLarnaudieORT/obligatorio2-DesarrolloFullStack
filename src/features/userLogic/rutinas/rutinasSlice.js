@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   rutina: {},
-  rutinasObtenidas: [],
+  listaDeRutinas: [],
   rutinaEditada: null,
   loading: false,
   error: null,
@@ -21,7 +21,7 @@ const rutinasSlice = createSlice({
 
     obtenerRutinasSuccess: (state, action) => {
       state.loading = false;
-      state.rutinasObtenidas = action.payload;
+      state.listaDeRutinas = action.payload;
       state.successMessage = null;
       state.error = null;
     },
@@ -61,7 +61,7 @@ const rutinasSlice = createSlice({
       state.rutinaEditada = action.payload;
 
       //Esto sirve para actualizar la lista de rutinas obtenidas en la tabla después de editar una rutina, sin necesidad de volver a hacer la petición para obtener todas las rutinas.
-      state.rutinasObtenidas = state.rutinasObtenidas.map((rutina) =>
+      state.listaDeRutinas = state.listaDeRutinas.map((rutina) =>
         rutina._id === action.payload._id ? action.payload : rutina,
       );
 

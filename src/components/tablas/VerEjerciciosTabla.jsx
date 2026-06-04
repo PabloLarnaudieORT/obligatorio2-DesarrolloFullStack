@@ -19,7 +19,7 @@ const VerEjerciciosTabla = () => {
   const [ejercicioAEliminarSeleccionado, setEjercicioAEliminarSeleccionado] =
     useState(null);
 
-  const { ejerciciosObtenidos, loading, error } = useSelector(
+  const { listaDeEjercicios, loading, error } = useSelector(
     (state) => state.ejerciciosStore,
   );
 
@@ -83,7 +83,7 @@ const VerEjerciciosTabla = () => {
                 </tr>
               )}
 
-              {!loading && !error && ejerciciosObtenidos.length === 0 && (
+              {!loading && !error && listaDeEjercicios.length === 0 && (
                 <tr>
                   <td colSpan="6">No hay desafíos cargados</td>
                 </tr>
@@ -91,7 +91,7 @@ const VerEjerciciosTabla = () => {
 
               {!loading &&
                 !error &&
-                ejerciciosObtenidos.map((ejercicio) => (
+                listaDeEjercicios.map((ejercicio) => (
                   <tr key={ejercicio._id}>
                     <td>{ejercicio.nombreEjercicio}</td>
                     <td>{ejercicio.fecha}</td>
@@ -135,13 +135,13 @@ const VerEjerciciosTabla = () => {
         //Le agregamos un fondo oscuro para que se note que es un modal
         <div className="modal-backdrop">
           <div className="modal-contenido">
-            <button
+            <BotonDinamico
               type="button"
               className="modal-cerrar"
               onClick={() => setEjercicioSeleccionado(null)}
             >
               ×
-            </button>
+            </BotonDinamico>
 
             <EditarEjercicioForm
               desafio={ejercicioSeleccionado}
@@ -157,13 +157,13 @@ const VerEjerciciosTabla = () => {
         //Le agregamos un fondo oscuro para que se note que es un modal
         <div className="modal-backdrop">
           <div className="modal-contenido">
-            <button
+            <BotonDinamico
               type="button"
               className="modal-cerrar"
               onClick={() => setEjercicioAEliminarSeleccionado(null)}
             >
               ×
-            </button>
+            </BotonDinamico>
 
             <EliminarEjercicioForm
               desafio={ejercicioAEliminarSeleccionado}
