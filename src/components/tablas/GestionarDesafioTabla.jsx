@@ -12,13 +12,12 @@ import api from "../../api/api";
 
 const GestionarDesafioTabla = () => {
   const dispatch = useDispatch();
-
   //Esto le interesa solo a este componente, y es para decir
   //el comportamiento de un modal, si hace click en una row, muestro el desafioSeleccionado.
   const [desafioSeleccionado, setDesafioSeleccionado] = useState(null);
 
-  
-  const [desafioAEliminarSeleccionado, setDesafioAEliminarSeleccionado] = useState(null);
+  const [desafioAEliminarSeleccionado, setDesafioAEliminarSeleccionado] =
+    useState(null);
 
   const { desafiosObtenidos, loading, error } = useSelector(
     (state) => state.desafiosStore,
@@ -34,7 +33,10 @@ const GestionarDesafioTabla = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("GestionarDesafioTabla > obtenerListaDeDesafios > res.data: ", res.data);
+      console.log(
+        "GestionarDesafioTabla > obtenerListaDeDesafios > res.data: ",
+        res.data,
+      );
       dispatch(obtenerDesafiosSuccess(res.data.desafios));
     } catch (error) {
       dispatch(
@@ -107,7 +109,8 @@ const GestionarDesafioTabla = () => {
                       >
                         Editar
                       </BotonDinamico>
-                      <BotonDinamico onClick={() => setDesafioAEliminarSeleccionado(desafio)}
+                      <BotonDinamico
+                        onClick={() => setDesafioAEliminarSeleccionado(desafio)}
                         classText="text-danger"
                       >
                         Eliminar

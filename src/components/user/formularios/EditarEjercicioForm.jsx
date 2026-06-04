@@ -1,30 +1,26 @@
-import { joiResolver } from "@hookform/resolvers/joi";
 import { useForm } from "react-hook-form";
-import BotonDinamico from "../../../botones/BotonDinamico";
+import BotonDinamico from "../../botones/BotonDinamico";
 import { useId } from "react";
-import { editarDesafiosSchema } from "../../../../validations/desafios.schema";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
-  editarDesafiosStart,
-  editarDesafiosSuccess,
-  editarDesafiosError,
-} from "../../../../features/adminLogic/desafios/desafiosSlice";
-import DropdownCategoriaZonaMuscular from "../../../dropdowns/DropdownCategoriaZonaMuscular";
-import api from "../../../../api/api";
+  editarEjerciciosError,
+  editarEjerciciosStart,
+  editarEjerciciosSuccess,
+  obtenerEjerciciosSuccess,
+} from "../../../features/userLogic/ejercicios/ejerciciosSlice";
+import DropdownCategoriaMuscular from "../../../components/dropdowns/DropdownCategoriaMuscular";
+import api from "../../../api/api";
 
 //recibe el desafio seleccionado en la tabla desde {desafio}
-const EditarEjercicioForm = ({ desafio, onEditado }) => {
+const EditarEjercicioForm = ({ ejercicio, onEditado }) => {
   const dispatch = useDispatch();
   //lo usamos para cuando el usuario haga click en el label haga foco en el field
-  const nombreDesafioId = useId();
-  const fechaLimiteId = useId();
-  const puntosDesafioId = useId();
-
-  //Lo usamos para verificar que el slice de categoriaZonaMuscular se actualice correctamente al
-  // hacer la petición de creación, y mostrar mensajes de error o éxito según corresponda.
-  const { loading, error, successMessage } = useSelector(
-    (state) => state.desafiosStore,
-  );
+  const fechaId = useId();
+  const nombreEjercicioId = useId();
+  const tipoPesoId = useId();
+  const pesoId = useId();
+  const seriesId = useId();
+  const repeticionesId = useId();
 
   //usamos a JOI para validar el formulario en tiempo real, y react-hook-form para manejar el estado del mismo.
   const {
@@ -32,40 +28,37 @@ const EditarEjercicioForm = ({ desafio, onEditado }) => {
     handleSubmit,
     formState: { errors, isSubmitting, isDirty, isValid },
   } = useForm({
-    resolver: joiResolver(editarDesafiosSchema),
     mode: "onChange",
     //precargamos los input con valores
     defaultValues: {
-      nombreDesafio: desafio.nombreDesafio,
-      fechaLimite: desafio.fechaLimite ? desafio.fechaLimite.split("T")[0] : "",
-      puntosDesafio: desafio.puntosDesafio,
-      categoriaZonaMuscular: desafio.categoriaZonaMuscular?._id || "",
+      nombreEjercicio: ejercicio.nombreEjercicio,
+      fecha: ejercicio.fecha ? ejercicio.fecha.split("T")[0] : "",
+      tipoDePeso: ejercicio.tipoDePeso,
+      peso: ejercicio.peso,
+      repeticiones: ejercicio.repeticiones,
+      series: ejercicio.series,
+      categoriaMusculo: ejercicio.categoriaMusculo,
     },
   });
 
-  const editarDesafio = async (data) => {
+  const editarEjercicioSubmit = async (data) => {
     console.log("EditarEjercicioTabla > editarDesafio > data: ", data);
 
-    dispatch(editarDesafiosStart());
+    dispatch(editarEjerciciosStart());
 
     try {
       const token = localStorage.getItem("token");
 
-      const res = await api.patch(`/ejercicios/${desafio._id}`, data, {
+      const res = await api.patch(`/ejercicios/${ejercicio._id}`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      console.log("EditarEjercicioTabla > editarDesafio > res.data: ", res.data);
-
-      dispatch(editarDesafiosSuccess(res.data));
+      dispatch(editarEjerciciosSuccess(res.data));
       onEditado();
     } catch (error) {
-      console.log("EditarEjercicioTabla > editarDesafio > error: ", error);
-
       dispatch(
-        editarDesafiosError(
+        editarEjerciciosError(
           error.response?.data?.message || "Error al editar el desafío",
         ),
       );
@@ -75,62 +68,119 @@ const EditarEjercicioForm = ({ desafio, onEditado }) => {
   return (
     <>
       <div className="tarjeta w-100" style={{ maxWidth: 620 }}>
-        <form className="p-4" onSubmit={handleSubmit(editarDesafio)}>
+        <form onSubmit={handleSubmit(editarEjercicioSubmit)}>
           <div className="mb-3">
-            <label htmlFor={nombreDesafioId} className="form-label">
-              Nombre Desafío
+            <label htmlFor={nombreEjercicioId} className="form-label">
+              Nombre Ejercicio
             </label>
             <input
+              id={nombreEjercicioId}
               type="text"
-              id={nombreDesafioId}
               className="form-control campo"
-              placeholder="Ej: Desafío Dominadas"
-              {...register("nombreDesafio")}
+              placeholder="Ej: Press de Banca"
+              {...register("nombreEjercicio", { optional: true })}
             />
-            {errors.nombreDesafio && (
-              <p className="text-danger mt-1">{errors.nombreDesafio.message}</p>
+            {errors.nombreEjercicio && (
+              <p className="text-danger mt-1">
+                {errors.nombreEjercicio.message}
+              </p>
             )}
           </div>
-          <div className="mb-3">
-            <label htmlFor={fechaLimiteId} className="form-label">
-              Fecha Límite
+
+          <div className="col-md-6 mb-3">
+            <label htmlFor={fechaId} className="form-label">
+              Fecha
             </label>
             <input
+              id={fechaId}
               type="date"
-              id={fechaLimiteId}
               className="form-control campo"
-              {...register("fechaLimite")}
-            />
-            {errors.fechaLimite && (
-              <p className="text-danger mt-1">{errors.fechaLimite.message}</p>
+              placeholder="0"
+              className="form-select campo"
+              {...register("fecha", { optional: true })}
+            ></input>
+            {errors.fecha && (
+              <p className="text-danger mt-1">{errors.fecha.message}</p>
             )}
           </div>
-          <div className="mb-3">
-            <label htmlFor={puntosDesafioId} className="form-label">
-              Puntos
-            </label>
-            <input
-              type="number"
-              id={puntosDesafioId}
-              className="form-control campo"
-              placeholder={100}
-              {...register("puntosDesafio")}
-            />
-            {errors.puntosDesafio && (
-              <p className="text-danger mt-1">{errors.puntosDesafio.message}</p>
+
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label htmlFor={tipoPesoId} className="form-label">
+                Tipo de peso
+              </label>
+              <select
+                id={tipoPesoId}
+                className="form-select campo"
+                {...register("tipoDePeso", { optional: true })}
+              >
+                <option value="kilogramos">Kilogramos (kg)</option>
+                <option value="libras">Libras (lbs)</option>
+              </select>
+              {errors.tipoDePeso && (
+                <p className="text-danger mt-1">{errors.tipoDePeso.message}</p>
+              )}
+            </div>
+
+            <div className="col-md-6 mb-3">
+              <label htmlFor={pesoId} className="form-label">
+                Peso
+              </label>
+              <input
+                id={pesoId}
+                type="number"
+                className="form-control campo"
+                placeholder="0"
+                {...register("peso", { optional: true })}
+              />
+            </div>
+            {errors.peso && (
+              <p className="text-danger mt-1">{errors.peso.message}</p>
             )}
           </div>
-          <DropdownCategoriaZonaMuscular desafio={desafio} register={register} />
+
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label htmlFor={repeticionesId} className="form-label">
+                Repeticiones
+              </label>
+              <input
+                id={repeticionesId}
+                type="number"
+                className="form-control campo"
+                placeholder="0"
+                {...register("repeticiones", { optional: true })}
+              />
+            </div>
+            {errors.repeticiones && (
+              <p className="text-danger mt-1">{errors.repeticiones.message}</p>
+            )}
+
+            <div className="col-md-6 mb-3">
+              <label htmlFor={seriesId} className="form-label">
+                Series
+              </label>
+              <input
+                id={seriesId}
+                type="number"
+                className="form-control campo"
+                placeholder="0"
+                {...register("series", { optional: true })}
+              />
+            </div>
+            {errors.series && (
+              <p className="text-danger mt-1">{errors.series.message}</p>
+            )}
+          </div>
+          <DropdownCategoriaMuscular register={register} errors={errors} />
           <BotonDinamico
             type="submit"
-            disabled={isSubmitting || !isDirty || !isValid}
-            classText="primary"
+            isDirty={isDirty}
+            isValid={isValid}
+            isSubmitting={isSubmitting}
           >
-            Guardar Cambios
+            Editar Ejercicio
           </BotonDinamico>
-          {loading && <p>Editando desafio...</p>}
-          {error && <p className="text-danger mt-1">{error}</p>}
-          {successMessage && <p className="mt-1">{successMessage}</p>}
         </form>
       </div>
     </>

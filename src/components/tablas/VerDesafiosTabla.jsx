@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Paginacion from "../botones/Paginacion";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,8 +9,6 @@ import {
 import api from "../../api/api";
 
 const VerDesafiosTabla = () => {
-  const [pagina, setPagina] = useState(1);
-
   const dispatch = useDispatch();
   const { desafiosObtenidos, loading, error } = useSelector(
     (state) => state.desafiosStore,
@@ -94,11 +91,6 @@ const VerDesafiosTabla = () => {
           </tbody>
         </table>
       </div>
-      <Paginacion
-        paginaActual={pagina}
-        totalPaginas={5} // Este número será dinámico cuando conectes con la API
-        onCambiarPagina={setPagina}
-      />
     </div>
   );
 };

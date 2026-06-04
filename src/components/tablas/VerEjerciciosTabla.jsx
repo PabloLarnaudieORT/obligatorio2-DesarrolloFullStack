@@ -8,6 +8,8 @@ import {
 } from "../../features/userLogic/ejercicios/ejerciciosSlice";
 import { useDispatch, useSelector } from "react-redux";
 import api from "../../api/api";
+import EliminarEjercicioForm from "../user/formularios/EliminarEjercicioForm";
+import EditarEjercicioForm from "../user/formularios/EditarEjercicioForm";
 
 const VerEjerciciosTabla = () => {
   const [pagina, setPagina] = useState(1);
@@ -34,10 +36,6 @@ const VerEjerciciosTabla = () => {
         },
       });
       setTotalPaginas(res.data.ejercicios.totalPages);
-      console.log(
-        "VerEjercicioTabla > obtenerListaDeEjercicios > res.data: ",
-        res.data,
-      );
       dispatch(obtenerEjerciciosSuccess(res.data.ejercicios.ejercicios));
     } catch (error) {
       dispatch(
@@ -52,6 +50,12 @@ const VerEjerciciosTabla = () => {
     obtenerListaDeEjercicios();
   }, [pagina]);
 
+  
+  const manejarEjercicioEliminado = async () => {
+  await obtenerListaDeEjercicios();
+  setEjercicioAEliminarSeleccionado(null);
+};
+
   return (
     <>
       <div className="tarjeta w-100 mb-4" style={{ maxWidth: 950 }}>
@@ -63,7 +67,8 @@ const VerEjerciciosTabla = () => {
                 <th>Tipo peso</th>
                 <th>Peso</th>
                 <th>Repeticiones</th>
-                <th>Serie</th>
+                <th>Series</th>
+                <th>Fecha</th>
                 <th>Categoría músculo</th>
                 <th>Acciones</th>
               </tr>
@@ -94,15 +99,13 @@ const VerEjerciciosTabla = () => {
                 listaDeEjercicios.map((ejercicio) => (
                   <tr key={ejercicio._id}>
                     <td>{ejercicio.nombreEjercicio}</td>
-                    <td>{ejercicio.fecha}</td>
-                    <td>
-                      {new Date(ejercicio.tipoDePeso).toLocaleDateString()}
-                    </td>
-                    <td>{new Date(ejercicio.peso).toLocaleDateString()}</td>
+                    <td>{ejercicio.tipoDePeso}</td>
+                    <td>{ejercicio.peso}</td>
                     <td>{ejercicio.repeticiones}</td>
+                    <td>{ejercicio.series}</td>
+                    <td>{new Date(ejercicio.fecha).toLocaleDateString()}</td>
                     <td>
-                      {ejercicio.categoriaZonaMuscular?.nombreCategoriaZona ||
-                        "Sin categoría"}
+                      {ejercicio.categoriaMusculo?.nombre || "Sin categoría"}
                     </td>
                     <td>
                       <BotonDinamico
@@ -144,8 +147,7 @@ const VerEjerciciosTabla = () => {
             </BotonDinamico>
 
             <EditarEjercicioForm
-              desafio={ejercicioSeleccionado}
-              //despues de editar un desafio, queremos actualizar la lista de desafios en la tabla.
+              ejercicio={ejercicioSeleccionado}
               onEditado={obtenerListaDeEjercicios}
             />
           </div>
@@ -166,9 +168,8 @@ const VerEjerciciosTabla = () => {
             </BotonDinamico>
 
             <EliminarEjercicioForm
-              desafio={ejercicioAEliminarSeleccionado}
-              //despues de eliminar un desafio, queremos actualizar la lista de desafios en la tabla.
-              onEliminado={obtenerListaDeEjercicios}
+              ejercicio={ejercicioAEliminarSeleccionado}
+              onEliminado={manejarEjercicioEliminado}
             />
           </div>
         </div>

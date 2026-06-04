@@ -9,6 +9,8 @@ import GraficoRutinas from "../../components/user/GraficoRutinas";
 import CrearRutinaForm from "../../components/user/formularios/CrearRutinaForm";
 //Categoria Zona Muscular
 import CrearCategoriaZonaMuscularPageForm from "../../components/admin/formularios/cateogirasZonaMuscular/CrearCategoriaZonaMuscularForm";
+//Categoria Muscular
+import CrearCatMuscForm from "../../components/user/formularios/CrearCatMuscForm";
 //Desafios
 import VerDesafiosTabla from "../../components/tablas/VerDesafiosTabla";
 //Ejercicios
@@ -29,17 +31,16 @@ const UserDashboardPage = () => {
         </div>
 
         {/* Cambio Plan*/}
-        <div className="col-lg-5">
-          <InformeUso />
-          <div className="row mt-5 g-4">
-            <div className="col-lg-7"></div>
-            <div className="mt-3">
-              <CambioPlan />
-            </div>
+        <div className="row mt-5 g-4 align-items-start">
+          <div className="col-lg-5">
+            <InformeUso />
+          </div>
+
+          <div className="col-lg-5">
+            <CambioPlan />
           </div>
         </div>
 
-        
         {/* Crear ejercicio*/}
         <div className="row mt-5 g-4">
           <div className="col-lg-7">
@@ -48,7 +49,6 @@ const UserDashboardPage = () => {
           </div>
         </div>
 
-
         {/* Mis ejercicios */}
         <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
           <h2>Mis Ejercicios</h2>
@@ -56,11 +56,6 @@ const UserDashboardPage = () => {
           <FiltroZonaMuscular />
 
           <VerEjerciciosTabla />
-
-          {/* Gráfico */}
-          <div className="mt-5">
-            <GraficoRutinas />
-          </div>
         </div>
 
         {/* Crear rutina + uso del plan */}
@@ -90,6 +85,14 @@ const UserDashboardPage = () => {
           {/* Gráfico */}
           <div className="mt-5">
             <GraficoRutinas />
+          </div>
+        </div>
+
+        {/* Crear Musculo*/}
+        <div className="row mt-5 g-4">
+          <div className="col-lg-7">
+            <h2>Crear Musculo</h2>
+            <CrearCatMuscForm />
           </div>
         </div>
 

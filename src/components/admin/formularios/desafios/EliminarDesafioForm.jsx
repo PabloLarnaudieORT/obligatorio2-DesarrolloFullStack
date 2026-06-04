@@ -18,15 +18,13 @@ const EliminarDesafioForm = ({ desafio, onEliminado }) => {
     (state) => state.desafiosStore,
   );
 
-  //usamos a JOI para validar el formulario en tiempo real, y react-hook-form para manejar el estado del mismo.
   const {
     handleSubmit,
   } = useForm({
     mode: "onChange",
   });
 
-  const eliminarDesafio = async (data) => {
-    console.log("EliminarDesafioForm > eliminarDesafio > data: ", data);
+  const eliminarDesafioSubmit = async (data) => {
 
     dispatch(eliminarDesafiosStart());
 
@@ -57,7 +55,7 @@ const EliminarDesafioForm = ({ desafio, onEliminado }) => {
   return (
     <>
       <div className="tarjeta w-100" style={{ maxWidth: 620 }}>
-        <form className="p-4" onSubmit={handleSubmit(eliminarDesafio)}>
+        <form className="p-4" onSubmit={handleSubmit(eliminarDesafioSubmit)}>
           <div>
             <p>
               ¿Estás seguro que deseas eliminar el desafío "

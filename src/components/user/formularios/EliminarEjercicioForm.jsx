@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
-import BotonDinamico from "../../../botones/BotonDinamico";
+import BotonDinamico from "../../botones/BotonDinamico"
 import { useDispatch, useSelector } from "react-redux";
 import {
   eliminarEjerciciosStart,
   eliminarEjerciciosSuccess,
   eliminarEjerciciosError,
-} from "../../../features/userLogic/ejercicios/ejerciciosSlice"
-import api from "../../../../api/api";
+} from "../../../features/userLogic/ejercicios/ejerciciosSlice";
+import api from "../../../api/api";
 
 //recibe el desafio seleccionado en la tabla desde {desafio}
 const EliminarEjercicioForm = ({ ejercicio, onEliminado }) => {
@@ -18,15 +18,12 @@ const EliminarEjercicioForm = ({ ejercicio, onEliminado }) => {
     (state) => state.ejerciciosStore,
   );
 
-  //usamos a JOI para validar el formulario en tiempo real, y react-hook-form para manejar el estado del mismo.
-  const {
-    handleSubmit,
-  } = useForm({
+  const { handleSubmit } = useForm({
     mode: "onChange",
   });
+  
 
-  const eliminarEjercicio = async (data) => {
-    console.log("EliminarEjercicioForm > eliminarEjercicio > data: ", data);
+  const eliminarEjercicio = async () => {
 
     dispatch(eliminarEjerciciosStart());
 
@@ -39,7 +36,10 @@ const EliminarEjercicioForm = ({ ejercicio, onEliminado }) => {
         },
       });
 
-      console.log("EliminarEjercicioForm > eliminarEjercicio > res.data: ", res.data);
+      console.log(
+        "EliminarEjercicioForm > eliminarEjercicio > res.data: ",
+        res.data,
+      );
 
       dispatch(eliminarEjerciciosSuccess(res.data));
       onEliminado();
@@ -65,10 +65,7 @@ const EliminarEjercicioForm = ({ ejercicio, onEliminado }) => {
             </p>
             <p className="text-danger">Esta acción no se puede deshacer.</p>
           </div>
-          <BotonDinamico
-            type="submit"
-            classText="primary"
-          >
+          <BotonDinamico type="submit" classText="primary">
             Eliminar Ejercicio
           </BotonDinamico>
           {loading && <p>Eliminando ejercicio...</p>}
