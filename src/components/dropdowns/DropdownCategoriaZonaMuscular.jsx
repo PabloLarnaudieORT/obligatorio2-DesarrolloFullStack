@@ -19,7 +19,7 @@ const DropdownCategoriaZonaMuscular = ({ desafio, register }) => {
 
   const cargarCategoriasZonaMuscular = async () => {
     // Aquí podrías despachar una acción para obtener las categorías de zona muscular si es necesario
-    console.log("Cargando categorías de zona muscular...");
+    console.log("DropdownCategoriaZonaMuscular > cargarCategoriasZonaMuscular...");
     dispatch(obtenerCategoriaZonaMuscularStart());
     try {
       const token = localStorage.getItem("token");
@@ -28,10 +28,10 @@ const DropdownCategoriaZonaMuscular = ({ desafio, register }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Categorías de zona muscular obtenidas:", res.data);
+      console.log("DropdownCategoriaZonaMuscular > cargarCategoriasZonaMuscular > res.data: ", res.data);
       dispatch(obtenerCategoriaZonaMuscularSuccess(res.data.categorias));
     } catch (error) {
-      console.error("Error al obtener categorías de zona muscular:", error);
+      console.log("DropdownCategoriaZonaMuscular > cargarCategoriasZonaMuscular > error: ", error);
       dispatch(
         obtenerCategoriaZonaMuscularError(
           error.response?.data?.message ||

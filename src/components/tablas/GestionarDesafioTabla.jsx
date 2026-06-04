@@ -34,7 +34,7 @@ const GestionarDesafioTabla = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Respuesta del backend al obtener desafíos:", res.data);
+      console.log("GestionarDesafioTabla > obtenerListaDeDesafios > res.data: ", res.data);
       dispatch(obtenerDesafiosSuccess(res.data.desafios));
     } catch (error) {
       dispatch(

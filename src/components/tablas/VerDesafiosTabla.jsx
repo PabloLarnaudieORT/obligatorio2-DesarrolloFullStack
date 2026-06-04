@@ -26,8 +26,8 @@ const VerDesafiosTabla = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("ID decodificado del token:", res);
-      console.log("Respuesta del backend al obtener desafíos:", res.data);
+      console.log("VerDesafiosTabla > id decoded > res: ", res);
+      console.log("VerDesafiosTabla > id decoded > res.data: ", res.data);
       dispatch(obtenerDesafiosSuccess(res.data.desafios));
     } catch (error) {
       dispatch(

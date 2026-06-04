@@ -33,7 +33,7 @@ const CrearCategoriaZonaMuscularForm = () => {
   });
 
   const procesarForm = async (data) => {
-    console.log("Datos del formulario:", data);
+    console.log("CrearCategoriaZonaMuscular > procesarForm > data:", data);
 
     dispatch(crearCategoriaZonaMuscularStart());
 
@@ -46,11 +46,11 @@ const CrearCategoriaZonaMuscularForm = () => {
         },
       });
 
-      console.log("Respuesta del backend:", res.data);
+      console.log("CrearCategoriaZonaMuscular > procesarForm > res.data: ", res.data);
 
       dispatch(crearCategoriaZonaMuscularSuccess(res.data));
     } catch (error) {
-      console.log("Error al crear categoría:", error);
+      console.log("CrearCategoriaZonaMuscular > procesarForm > error: ", error);
 
       dispatch(
         crearCategoriaZonaMuscularError(

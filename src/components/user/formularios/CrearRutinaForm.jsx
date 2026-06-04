@@ -1,114 +1,114 @@
 import { useForm } from "react-hook-form";
-import BotonCrear from "../../botones/BotonCrear";
-
-const ejerciciosMock = [
-  {
-    _id: "1",
-    nombreEjercicio: "Press banca"
-  },
-  {
-    _id: "2",
-    nombreEjercicio: "Remo"
-  },
-  {
-    _id: "3",
-    nombreEjercicio: "Dominadas"
-  },
-  {
-    _id: "4",
-    nombreEjercicio: "Curl bíceps"
-  }
-];
-
-const zonasMock = [
-  {
-    _id: "1",
-    nombreCategoriaZona: "Tren Superior"
-  },
-  {
-    _id: "2",
-    nombreCategoriaZona: "Tren Inferior"
-  },
-  {
-    _id: "3",
-    nombreCategoriaZona: "Zona Media"
-  }
-];
+import { useId } from "react";
+import BotonDinamico from "../../botones/BotonDinamico";
+import { useDispatch } from "react-redux";
+import {
+  obtenerRutinasSuccess,
+  crearRutinaError,
+  crearRutinaStart,
+  crearRutinaSuccess
+} from "../../../features/userLogic/rutinas/rutinasSlice";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { crearRutinaSchema } from "../../../validations/rutinas.schema";
+import api from "../../../api/api";
+import { jwtDecode } from "jwt-decode";
+import DropdownCategoriaZonaMuscular from "../../../components/dropdowns/DropdownCategoriaZonaMuscular"
 
 const CrearRutinaForm = () => {
+  const nombreRutina = useId();
+
+  const dispatch = useDispatch();
+
 
   const {
     register,
-    formState: { isDirty, isValid, isSubmitting }
-  } = useForm({
-    mode: "onChange"
-  });
+    handleSubmit,
+    formState: { errors, isDirty, isValid, isSubmitting },
+  } = useForm({ resolver: joiResolver(crearRutinaSchema) });
+
+  const crearRutinaSubmit = async (data) => {
+    dispatch(crearRutinaStart());
+    try {
+      const token = localStorage.getItem("token");
+      const tokenDecoded = jwtDecode(token);
+      const dataConUsuario = {
+        //precisamos pasarle el id
+        ...data,
+        idUsuarioCreador: tokenDecoded.id,
+      };
+      const res = await api.post("/rutinas", dataConUsuario, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(crearRutinaSuccess(res.data));
+      const resRutinas = await api.get("/rutinas", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch(obtenerRutinasSuccess(resRutinas.data.rutinas.rutinas));
+    } catch (error) {
+      dispatch(
+        crearRutinaError(
+          error.response?.data?.message || "Error al crear la rutina",
+        ),
+      );
+    }
+  };
 
   return (
     <div className="tarjeta">
+      <form onSubmit={handleSubmit(crearRutinaSubmit)}>
+        <div className="mb-4">
+          <label htmlFor={nombreRutina} className="form-label">
+            Nombre Rutina
+          </label>
+          <input
+            type="text"
+            className="form-control campo"
+            id={nombreRutina}
+            placeholder="Ej: Tu nuva rutina"
+            {...register("nombreRutina")}
+          />
+        </div>
+        {errors.nombreRutina && (
+          <p className="text-danger mt-1">{errors.nombreRutina.message}</p>
+        )}
 
-      <form>
+          <DropdownCategoriaZonaMuscular
+            register={register}
+          />
+          {errors.categoriaZonaMuscular && (
+            <p className="text-danger mt-1">
+              {errors.categoriaZonaMuscular.message}
+            </p>
+          )}
 
         <div className="mb-4">
-          <label className="form-label">
-            Zona Muscular
+          <label htmlFor={nombreRutina} className="form-label">
+            Nombre Rutina
           </label>
-
-          <select
-            className="form-select campo"
-            {...register("categoriaZonaMuscular", {
-              required: true
-            })}
-          >
-            <option value="">
-              Seleccione una zona
-            </option>
-
-            {zonasMock.map((zona) => (
-              <option
-                key={zona._id}
-                value={zona._id}
-              >
-                {zona.nombreCategoriaZona}
-              </option>
-            ))}
-          </select>
+          <input
+            type="text"
+            className="form-control campo"
+            id={nombreRutina}
+            placeholder="Ej: Tu nuva rutina"
+            {...register("nombreRutina")}
+          />
         </div>
-
-        <div className="mb-4">
-
-          <label className="form-label">
-            Ejercicios
-          </label>
-
-          {ejerciciosMock.map((ejercicio) => (
-            <div
-              key={ejercicio._id}
-              className="form-check"
-            >
-              <input
-                className="form-check-input"
-                type="checkbox"
-                value={ejercicio._id}
-                {...register("ejercicios")}
-              />
-
-              <label className="form-check-label">
-                {ejercicio.nombreEjercicio}
-              </label>
-            </div>
-          ))}
-
-        </div>
-
-        <BotonCrear
+        {errors.nombreRutina && (
+          <p className="text-danger mt-1">{errors.nombreRutina.message}</p>
+        )}
+        <BotonDinamico
+          type="submit"
           isDirty={isDirty}
           isValid={isValid}
           isSubmitting={isSubmitting}
-        />
-
+        >
+          Crear Rutina
+        </BotonDinamico>
       </form>
-
     </div>
   );
 };

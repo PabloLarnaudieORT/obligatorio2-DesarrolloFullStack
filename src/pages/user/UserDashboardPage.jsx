@@ -1,14 +1,19 @@
-import DesafiosActivos from "../../components/user/DesafiosActivos";
-import ProgresoGeneral from "../../components/user/InformeUso";
-import CrearRutinaForm from "../../components/user/formularios/CrearRutinaForm";
+//import DesafiosActivos from "../../components/user/DesafiosActivos";
+//import ProgresoGeneral from "../../components/user/InformeUso";
 import FiltroZonaMuscular from "../../components/busqueda/FiltroZonaMuscular";
-import VerRutinasTabla from "../../components/tablas/VerRutinasTabla";
 import InformeUso from "../../components/user/InformeUso";
 import CambioPlan from "../../components/user/CambioPlan";
+//Rutinas
+import VerRutinasTabla from "../../components/tablas/VerRutinasTabla";
 import GraficoRutinas from "../../components/user/GraficoRutinas";
+import CrearRutinaForm from "../../components/user/formularios/CrearRutinaForm";
+//Categoria Zona Muscular
 import CrearCategoriaZonaMuscularPageForm from "../../components/admin/formularios/cateogirasZonaMuscular/CrearCategoriaZonaMuscularForm";
-
+//Desafios
 import VerDesafiosTabla from "../../components/tablas/VerDesafiosTabla";
+//Ejercicios
+import CrearEjercicioForm from "../../components/user/formularios/CrearEjercicioForm";
+import VerEjerciciosTabla from "../../components/tablas/VerEjerciciosTabla";
 
 const UserDashboardPage = () => {
   return (
@@ -21,6 +26,41 @@ const UserDashboardPage = () => {
             Registrá tus entrenamientos, seguí tu evolución y superá tus
             límites.
           </p>
+        </div>
+
+        {/* Cambio Plan*/}
+        <div className="col-lg-5">
+          <InformeUso />
+          <div className="row mt-5 g-4">
+            <div className="col-lg-7"></div>
+            <div className="mt-3">
+              <CambioPlan />
+            </div>
+          </div>
+        </div>
+
+        
+        {/* Crear ejercicio*/}
+        <div className="row mt-5 g-4">
+          <div className="col-lg-7">
+            <h2>Crear Ejercicio</h2>
+            <CrearEjercicioForm />
+          </div>
+        </div>
+
+
+        {/* Mis ejercicios */}
+        <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
+          <h2>Mis Ejercicios</h2>
+
+          <FiltroZonaMuscular />
+
+          <VerEjerciciosTabla />
+
+          {/* Gráfico */}
+          <div className="mt-5">
+            <GraficoRutinas />
+          </div>
         </div>
 
         {/* Crear rutina + uso del plan */}

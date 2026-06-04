@@ -13,7 +13,7 @@ import DropdownCategoriaZonaMuscular from "../../../dropdowns/DropdownCategoriaZ
 import api from "../../../../api/api";
 
 //recibe el desafio seleccionado en la tabla desde {desafio}
-const EditarDesafioForm = ({ desafio, onEditado }) => {
+const EditarEjercicioForm = ({ desafio, onEditado }) => {
   const dispatch = useDispatch();
   //lo usamos para cuando el usuario haga click en el label haga foco en el field
   const nombreDesafioId = useId();
@@ -44,25 +44,25 @@ const EditarDesafioForm = ({ desafio, onEditado }) => {
   });
 
   const editarDesafio = async (data) => {
-    console.log("EditarDesafioForm > editarDesafio > data: ", data);
+    console.log("EditarEjercicioTabla > editarDesafio > data: ", data);
 
     dispatch(editarDesafiosStart());
 
     try {
       const token = localStorage.getItem("token");
 
-      const res = await api.patch(`/desafios/${desafio._id}`, data, {
+      const res = await api.patch(`/ejercicios/${desafio._id}`, data, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      console.log("EditarDesafioForm > editarDesafio > res.data: ", res.data);
+      console.log("EditarEjercicioTabla > editarDesafio > res.data: ", res.data);
 
       dispatch(editarDesafiosSuccess(res.data));
       onEditado();
     } catch (error) {
-       console.log("EditarDesafioForm > editarDesafio > error: ", error);
+      console.log("EditarEjercicioTabla > editarDesafio > error: ", error);
 
       dispatch(
         editarDesafiosError(
@@ -137,4 +137,4 @@ const EditarDesafioForm = ({ desafio, onEditado }) => {
   );
 };
 
-export default EditarDesafioForm;
+export default EditarEjercicioForm;
