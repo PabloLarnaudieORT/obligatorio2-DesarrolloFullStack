@@ -1,6 +1,56 @@
-import React from 'react'
+import { useEffect, useState } from "react";
 
-const CambioPlan = () => {
+import {
+  obtenerMiPerfil,
+  cambiarPlanPremium,
+} from "../../features/userLogic/usuarioAction";
+
+const CambioPlan = ({
+  plan,
+  setPlan,
+}) => {
+
+  
+
+
+  const actualizarPlan =
+    async () => {
+
+      const confirmar =
+        window.confirm(
+          "¿Deseás pasar a Premium?"
+        );
+
+      if (!confirmar) return;
+
+      const resultado =
+        await cambiarPlanPremium();
+
+      if (resultado.success) {
+
+        setPlan("premium");
+
+        localStorage.setItem(
+          "plan",
+          "premium"
+        );
+
+        alert(
+          "¡Ahora sos usuario Premium!"
+        );
+
+        
+
+      } else {
+
+        alert(
+          resultado.error
+        );
+
+      }
+
+    };
+
   return (
     <div className="tarjeta">
 
@@ -8,17 +58,39 @@ const CambioPlan = () => {
         Plan Actual
       </h4>
 
-      <p className="fw-bold">
-        PLUS
+      <p className="fw-bold text-uppercase">
+        {plan}
       </p>
 
-      <p>
-        Límite: 4 rutinas
-      </p>
+      {plan === "plus" ? (
+        <>
+          <p>
+            Límite: 4 rutinas
+          </p>
 
-      <button className="btn btn-warning w-100">
-        Pasar a Premium
-      </button>
+          <button
+            onClick={
+              actualizarPlan
+            }
+            className="btn btn-warning w-100"
+          >
+            Pasar a Premium
+          </button>
+        </>
+      ) : (
+        <>
+          <p>
+            Rutinas ilimitadas
+          </p>
+
+          <button
+            disabled
+            className="btn btn-success w-100"
+          >
+            Plan Premium Activo
+          </button>
+        </>
+      )}
 
     </div>
   );

@@ -4,7 +4,7 @@ import {
   obtenerCategoriaMuscularStart,
   obtenerCategoriaMuscularSuccess,
   obtenerCategoriaMuscularError,
-} from "../../features/userLogic/categoriaMuscular/categoriaMuscularSlice";
+} from "../../features/userLogic/categoriaMuscularSlice";
 import api from "../../api/api";
 
 const DropdownCategoriaMuscular = ({ register, errors }) => {

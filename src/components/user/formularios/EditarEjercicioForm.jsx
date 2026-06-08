@@ -6,7 +6,7 @@ import {
   editarEjerciciosError,
   editarEjerciciosStart,
   editarEjerciciosSuccess,
-} from "../../../features/userLogic/ejercicios/ejerciciosSlice";
+} from "../../../features/userLogic/ejerciciosSlice";
 import DropdownCategoriaMuscular from "../../../components/dropdowns/DropdownCategoriaMuscular";
 import api from "../../../api/api";
 
@@ -35,7 +35,7 @@ const EditarEjercicioForm = ({ ejercicio, onEditado }) => {
       peso: ejercicio.peso,
       repeticiones: ejercicio.repeticiones,
       series: ejercicio.series,
-      categoriaMusculo: ejercicio.categoriaMusculo,
+      categoriaMusculo: ejercicio.categoriaMusculo?._id,
     },
   });
 

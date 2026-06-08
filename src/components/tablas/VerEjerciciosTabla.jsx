@@ -5,7 +5,7 @@ import {
   obtenerEjerciciosError,
   obtenerEjerciciosStart,
   obtenerEjerciciosSuccess,
-} from "../../features/userLogic/ejercicios/ejerciciosSlice";
+} from "../../features/userLogic/ejerciciosSlice";
 import { useDispatch, useSelector } from "react-redux";
 import api from "../../api/api";
 import EliminarEjercicioForm from "../user/formularios/EliminarEjercicioForm";
@@ -26,34 +26,53 @@ const VerEjerciciosTabla = () => {
   );
 
   const obtenerListaDeEjercicios = async () => {
-    dispatch(obtenerEjerciciosStart());
+  dispatch(obtenerEjerciciosStart());
 
-    try {
-      const token = localStorage.getItem("token");
-      const res = await api.get(`/ejercicios?page=${pagina}`, {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await api.get(
+      `/ejercicios?page=${pagina}`,
+      {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
-      setTotalPaginas(res.data.ejercicios.totalPages);
-      dispatch(obtenerEjerciciosSuccess(res.data.ejercicios.ejercicios));
-    } catch (error) {
-      dispatch(
-        obtenerEjerciciosError(
-          error.response?.data?.message || "Error al obtener los ejercicios",
-        ),
-      );
-    }
-  };
+      }
+    );
+
+    setTotalPaginas(
+      res.data.ejercicios.totalPages
+    );
+
+    dispatch(
+      obtenerEjerciciosSuccess(
+        res.data.ejercicios.ejercicios
+      )
+    );
+
+  } catch (error) {
+    dispatch(
+      obtenerEjerciciosError(
+        error.response?.data?.message ||
+        "Error al obtener los ejercicios"
+      )
+    );
+  }
+};
 
   useEffect(() => {
     obtenerListaDeEjercicios();
   }, [pagina]);
 
-  
+
   const manejarEjercicioEliminado = async () => {
+    await obtenerListaDeEjercicios();
+    setEjercicioAEliminarSeleccionado(null);
+  };
+
+  const manejarEjercicioEditado = async () => {
   await obtenerListaDeEjercicios();
-  setEjercicioAEliminarSeleccionado(null);
+  setEjercicioSeleccionado(null);
 };
 
   return (
@@ -148,7 +167,7 @@ const VerEjerciciosTabla = () => {
 
             <EditarEjercicioForm
               ejercicio={ejercicioSeleccionado}
-              onEditado={obtenerListaDeEjercicios}
+              onEditado={manejarEjercicioEditado}
             />
           </div>
         </div>

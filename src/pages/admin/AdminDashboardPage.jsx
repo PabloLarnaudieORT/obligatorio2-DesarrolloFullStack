@@ -1,5 +1,5 @@
-﻿import CrearCategoriaZonaMuscularPageForm from "../../components/admin/formularios/cateogirasZonaMuscular/CrearCategoriaZonaMuscularForm";
-import CrearDesafioForm from "../../components/admin/formularios/desafios/CrearDesafioForm";
+import CrearCategoriaZonaMuscularPageForm from "../../components/admin/formularios/CrearCategoriaZonaMuscularForm";
+import CrearDesafioForm from "../../components/admin/formularios/CrearDesafioForm";
 
 import GestionarDesafioTabla from "../../components/tablas/admin/GestionarDesafioTabla";
 

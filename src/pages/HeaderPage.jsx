@@ -1,4 +1,9 @@
-﻿const HeaderPage = ({ onMenuClick }) => {
+﻿
+const HeaderPage = ({ onMenuClick }) => {
+
+  const usuario =
+    localStorage.getItem("user");
+    
   return (
     <header className="navbar">
       <button
@@ -10,7 +15,7 @@
         ☰
       </button>
       <div className="logo">
-        <span>Bienvenido, Admin admin</span>
+        <span>Bienvenido, {usuario}</span>
         <span className="avatar" aria-label="Administrador">
           👤
         </span>
