@@ -1,6 +1,17 @@
-﻿import { NavLink } from "react-router";
+﻿import { NavLink, useNavigate } from "react-router";
+import { useDispatch } from 'react-redux';
+
+import { logoutUsuario } from '../../features/authLogic/authAction';
 
 const AdminMenuHamburguesa = ({ menuAbierto }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const cerrarSesion = () => {
+    dispatch(logoutUsuario());
+    navigate("/");
+  };
+
   return (
     <nav className={menuAbierto ? "sidebar" : "sidebar sidebar-cerrada"} aria-label="Menú administrador">
       <ul className="list-unstyled">
@@ -10,23 +21,10 @@ const AdminMenuHamburguesa = ({ menuAbierto }) => {
           </NavLink>
         </li>
 
-        <li>
-          <NavLink
-            to="/crear-categoria-zona-muscular"
-            className="text-decoration-none acento"
-          >
-            Crear Categoría Zona Muscular
-          </NavLink>
-        </li>
-
-        <li>
-          <NavLink
-            to="/gestionar-desafios"
-            className="text-decoration-none text-reset"
-          >
-            Gestionar Desafíos
-          </NavLink>
-        </li>
+        <li className="mt-4"> <button onClick={cerrarSesion} className="btn btn-danger w-100">
+            Cerrar sesión
+          </button>
+          </li>
       </ul>
     </nav>
   );

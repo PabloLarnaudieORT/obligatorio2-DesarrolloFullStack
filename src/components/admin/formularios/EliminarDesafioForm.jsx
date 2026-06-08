@@ -1,53 +1,52 @@
 import { useForm } from "react-hook-form";
-import BotonDinamico from "../../botones/BotonDinamico"
+import BotonDinamico from "../../botones/BotonDinamico";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  eliminarEjerciciosStart,
-  eliminarEjerciciosSuccess,
-  eliminarEjerciciosError,
-} from "../../../features/userLogic/ejerciciosSlice";
+  eliminarDesafiosStart,
+  eliminarDesafiosSuccess,
+  eliminarDesafiosError,
+} from "../../../features/adminLogic/desafios/desafiosSlice";
 import api from "../../../api/api";
 
 //recibe el desafio seleccionado en la tabla desde {desafio}
-const EliminarEjercicioForm = ({ ejercicio, onEliminado }) => {
+const EliminarDesafioForm = ({ desafio, onEliminado }) => {
   const dispatch = useDispatch();
 
   //Lo usamos para verificar que el slice de categoriaZonaMuscular se actualice correctamente al
   // hacer la petición de creación, y mostrar mensajes de error o éxito según corresponda.
   const { loading, error, successMessage } = useSelector(
-    (state) => state.ejerciciosStore,
+    (state) => state.desafiosStore,
   );
 
-  const { handleSubmit } = useForm({
+  //usamos a JOI para validar el formulario en tiempo real, y react-hook-form para manejar el estado del mismo.
+  const {
+    handleSubmit,
+  } = useForm({
     mode: "onChange",
   });
-  
 
-  const eliminarEjercicio = async () => {
+  const eliminarDesafioSubmit = async (data) => {
 
-    dispatch(eliminarEjerciciosStart());
+    dispatch(eliminarDesafiosStart());
 
     try {
       const token = localStorage.getItem("token");
 
-      const res = await api.delete(`/ejercicios/${ejercicio._id}`, {
+      const res = await api.delete(`/desafios/${desafio._id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      console.log(
-        "EliminarEjercicioForm > eliminarEjercicio > res.data: ",
-        res.data,
-      );
+      console.log("Respuesta del backend:", res.data);
 
-      dispatch(eliminarEjerciciosSuccess(res.data));
+      dispatch(eliminarDesafiosSuccess(res.data));
       onEliminado();
     } catch (error) {
-      console.log("EliminarEjercicioForm > eliminarEjercicio > error: ", error);
+      console.log("Error al eliminar desafío:", error);
 
       dispatch(
-        eliminarEjerciciosError(
+        eliminarDesafiosError(
           error.response?.data?.message || "Error al eliminar el desafío",
         ),
       );
@@ -57,18 +56,21 @@ const EliminarEjercicioForm = ({ ejercicio, onEliminado }) => {
   return (
     <>
       <div className="tarjeta w-100" style={{ maxWidth: 620 }}>
-        <form className="p-4" onSubmit={handleSubmit(eliminarEjercicio)}>
+        <form className="p-4" onSubmit={handleSubmit(eliminarDesafioSubmit)}>
           <div>
             <p>
-              ¿Estás seguro que deseas eliminar el ejercicio"
-              {ejercicio.nombreEjercicio}"?
+              ¿Estás seguro que deseas eliminar el desafío "
+              {desafio.nombreDesafio}"?
             </p>
             <p className="text-danger">Esta acción no se puede deshacer.</p>
           </div>
-          <BotonDinamico type="submit" classText="primary">
-            Eliminar Ejercicio
+          <BotonDinamico
+            type="submit"
+            classText="primary"
+          >
+            Eliminar Desafío
           </BotonDinamico>
-          {loading && <p>Eliminando ejercicio...</p>}
+          {loading && <p>Eliminando desafío...</p>}
           {error && <p className="text-danger mt-1">{error}</p>}
           {successMessage && <p className="mt-1">{successMessage}</p>}
         </form>
@@ -77,4 +79,4 @@ const EliminarEjercicioForm = ({ ejercicio, onEliminado }) => {
   );
 };
 
-export default EliminarEjercicioForm;
+export default EliminarDesafioForm;

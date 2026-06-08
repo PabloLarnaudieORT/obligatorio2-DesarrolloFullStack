@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -8,7 +7,7 @@ import {
 } from "../../features/adminLogic/desafios/desafiosSlice";
 import api from "../../api/api";
 
-const VerDesafiosTabla = () => {
+const VerDesafiosUserTabla = () => {
   const dispatch = useDispatch();
   const { desafiosObtenidos, loading, error } = useSelector(
     (state) => state.desafiosStore,
@@ -23,8 +22,7 @@ const VerDesafiosTabla = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("VerDesafiosTabla > id decoded > res: ", res);
-      console.log("VerDesafiosTabla > id decoded > res.data: ", res.data);
+      
       dispatch(obtenerDesafiosSuccess(res.data.desafios));
     } catch (error) {
       dispatch(
@@ -49,7 +47,7 @@ const VerDesafiosTabla = () => {
                             <th>Fecha Límite</th>
                             <th>Puntos</th>
                             <th>Categoría Zona Muscular</th>
-                            <th>Acciones</th>
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -74,33 +72,43 @@ const VerDesafiosTabla = () => {
             )}
 
             {!loading &&
-              !error &&
-              desafiosObtenidos.map((desafio) => (
-                <tr key={desafio._id}>
-                  <td>{desafio.nombreDesafio}</td>
-                  <td>
-                    {new Date(desafio.fechaCreacion).toLocaleDateString()}
-                  </td>
-                  <td>{new Date(desafio.fechaLimite).toLocaleDateString()}</td>
-                  <td>{desafio.puntosDesafio}</td>
-                  <td>
-                    {desafio.categoriaZonaMuscular?.nombreCategoriaZona ||
-                      "Sin categoría"}
-                            </td>
-                        </tr>
-              ))}
+  !error &&
+  desafiosObtenidos.map((desafio) => {
+
+
+    return (
+      <tr key={desafio._id}>
+        <td>{desafio.nombreDesafio}</td>
+
+        <td>
+          {new Date(
+            desafio.fechaCreacion
+          ).toLocaleDateString()}
+        </td>
+
+        <td>
+          {new Date(
+            desafio.fechaLimite
+          ).toLocaleDateString()}
+        </td>
+
+        <td>{desafio.puntosDesafio}</td>
+
+        <td>
+          {desafio.categoriaZonaMuscular?.nombreCategoriaZona ||
+            "Sin categoría"}
+        </td>
+      </tr>
+    );
+
+  })}
                     </tbody>
                 </table>
             </div>
-            <Paginacion 
-    paginaActual={pagina} 
-    totalPaginas={5} // Este número será dinámico cuando conectes con la API
-    onCambiarPagina={setPagina} 
-  />
+            
         </div>
   );
 };
 
-export default VerDesafiosTabla;
+export default VerDesafiosUserTabla;
 
-export default VerDesafiosTabla

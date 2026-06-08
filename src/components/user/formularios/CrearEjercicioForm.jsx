@@ -1,18 +1,25 @@
 import { useDispatch } from "react-redux";
 import BotonDinamico from "../../botones/BotonDinamico";
 import { useForm } from "react-hook-form";
-import { useId } from "react";
+import { useId, useState } from "react";
 import {
   crearEjercicioStart,
   crearEjercicioSuccess,
   crearEjercicioError,
-} from "../../../features/userLogic/ejercicios/ejerciciosSlice";
+  obtenerEjerciciosSuccess,
+} from "../../../features/userLogic/ejerciciosSlice";
 import api from "../../../api/api";
 import DropdownCategoriaMuscular from "../../dropdowns/DropdownCategoriaMuscular";
 import { jwtDecode } from "jwt-decode";
 
 const CrearEjercicioForm = () => {
   const dispatch = useDispatch();
+
+  const [mensajeExito, setMensajeExito] =
+    useState("");
+
+  const [mensajeError, setMensajeError] =
+    useState("");
 
   const fechaId = useId()
   const nombreEjercicioId = useId();
@@ -24,34 +31,93 @@ const CrearEjercicioForm = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting, isDirty, isValid },
   } = useForm({
     mode: "onChange",
   });
 
   const crearEjercicioSubmit = async (data) => {
-    dispatch(crearEjercicioStart(data));
+
+    setMensajeExito("");
+    setMensajeError("");
+
+    dispatch(crearEjercicioStart());
+
     try {
-      const token = localStorage.getItem("token");
-      const tokenDecoded = jwtDecode(token);
+
+      const token =
+        localStorage.getItem("token");
+
+      const tokenDecoded =
+        jwtDecode(token);
+
       const dataConUsuario = {
-        //precisamos pasarle el id
         ...data,
-        idUsuarioCreador: tokenDecoded.id,
+        idUsuarioCreador:
+          tokenDecoded.id,
       };
-      const res = api.post("/ejercicios", dataConUsuario, {
-        headers: {
-          Authorization: `Bearer: ${token}`,
-        },
-      });
-      dispatch(crearEjercicioSuccess(res.data));
+
+      const res =
+        await api.post(
+          "/ejercicios",
+          dataConUsuario,
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`,
+            },
+          }
+        );
+
+      dispatch(
+        crearEjercicioSuccess(
+          res.data
+        )
+      );
+
+      const resEjercicios =
+        await api.get(
+          "/ejercicios?page=1",
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`,
+            },
+          }
+        );
+
+      dispatch(
+        obtenerEjerciciosSuccess(
+          resEjercicios.data
+            .ejercicios.ejercicios
+        )
+      );
+
+      setMensajeExito(
+        "Ejercicio creado correctamente"
+      );
+
+      reset();
+
     } catch (error) {
+
+      const mensaje =
+        error.response?.data?.message ||
+        "Error al crear ejercicio";
+
       dispatch(
         crearEjercicioError(
-          error.response?.data?.message || "Error al crear ejercicio",
-        ),
+          mensaje
+        )
       );
+
+      setMensajeError(
+        mensaje
+      );
+
     }
+
   };
 
   return (
@@ -80,7 +146,6 @@ const CrearEjercicioForm = () => {
           <input
             id={fechaId}
             type="date"
-            className="form-control campo"
             placeholder="0"
             className="form-select campo"
             {...register("fecha")}
@@ -167,8 +232,20 @@ const CrearEjercicioForm = () => {
         >
           Crear Ejercicio
         </BotonDinamico>
+        {mensajeError && (
+          <p className="text-danger mt-2">
+            {mensajeError}
+          </p>
+        )}
+
+        {mensajeExito && (
+          <p className="text-success mt-2">
+            {mensajeExito}
+          </p>
+        )}
       </form>
     </div>
+
   );
 };
 

@@ -2,15 +2,15 @@ import { configureStore } from "@reduxjs/toolkit";
 //Categorías Zona Muscular
 import categoriaZonaMuscularReducer from "../features/adminLogic/categoriaZonaMuscular/categoriaZonaMuscularSlice";
 //Categoria Muscular
-import categoriaMuscularReducer from "../features/userLogic/categoriaMuscular/categoriaMuscularSlice"
+import categoriaMuscularReducer from "../features/userLogic/categoriaMuscularSlice"
 //Desafios
 import desafiosSliceReducer from "../features/adminLogic/desafios/desafiosSlice";
 // Auth
 import authReducer from "../features/authLogic/authSlice";
 //Ejercicios
-import ejerciciosSliceReducer from "../features/userLogic/ejercicios/ejerciciosSlice";
+import ejerciciosSliceReducer from "../features/userLogic/ejerciciosSlice";
 //Rutinas
-import rutinasSliceReducer from "../features/userLogic/rutinas/rutinasSlice";
+//import rutinasSliceReducer from "../features/userLogic/rutinasSlice";
 
 export const store = configureStore({
   reducer: {
@@ -25,6 +25,6 @@ export const store = configureStore({
     // Ejercicios
     ejerciciosStore: ejerciciosSliceReducer,
     // Rutinas
-    rutinasStore: rutinasSliceReducer,
+    //rutinasStore: rutinasSliceReducer,
   },
 });

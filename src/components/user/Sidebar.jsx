@@ -1,16 +1,35 @@
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
+import { logoutUsuario } from '../../features/authLogic/authAction';
+
 
 const Sidebar = ({ abierto }) => {
-  return (
-    <nav className={abierto ? "sidebar" : "sidebar sidebar-cerrada"} aria-label="Menú usuario">
-      <ul className="list-unstyled">
-        <li><Link to="/dashboard" className="text-decoration-none acento">Homepage</Link></li>
-        <li><Link to="/perfil" className="text-decoration-none text-reset">Mi Perfil</Link></li>
-        <li><Link to="/crear-categoria-muscular" className="text-decoration-none acento">Crear Categoría Muscular</Link></li>
-        <li><Link to="/gestionar-ejercicios" className="text-decoration-none text-reset">Gestionar Ejercicios</Link></li>
-      </ul>
-    </nav>
-  )
-}
+  const dispatch = useDispatch();
 
-export default Sidebar
+  const navigate = useNavigate();
+
+  const cerrarSesion = () => {
+
+    dispatch(logoutUsuario());
+
+    navigate("/");
+};
+    return (
+      <nav className={abierto ? "sidebar" : "sidebar sidebar-cerrada"} aria-label="Menú usuario">
+        <ul className="list-unstyled">
+          <li><Link to="/dashboard" className="text-decoration-none acento">Homepage</Link></li>
+          <li><Link to="/perfil" className="text-decoration-none text-reset">Mi Perfil</Link></li>
+          <li><Link to="/crear-categoria-muscular" className="text-decoration-none acento">Crear Categoría Muscular</Link></li>
+          <li><Link to="/gestionar-ejercicios" className="text-decoration-none text-reset">Gestionar Ejercicios</Link></li>
+          <li className="mt-4"> <button onClick={cerrarSesion} className="btn btn-danger w-100">
+            Cerrar sesión
+          </button>
+          </li>
+        </ul>
+      </nav>
+    )
+  }
+
+  export default Sidebar;

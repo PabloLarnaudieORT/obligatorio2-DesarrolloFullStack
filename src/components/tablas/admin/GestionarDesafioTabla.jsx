@@ -1,6 +1,6 @@
-import EditarDesafioForm from "../../admin/formularios/desafios/EditarDesafioForm";
+import EditarDesafioForm from "../../admin/formularios/EditarDesafioForm";
 import BotonDinamico from "../../botones/BotonDinamico";
-import EliminarDesafioForm from "../../admin/formularios/desafios/EliminarDesafioForm";
+import EliminarDesafioForm from "../../admin/formularios/EliminarDesafioForm";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -34,7 +34,7 @@ const GestionarDesafioTabla = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("GestionarDesafioTabla > obtenerListaDeDesafios", res.data);
+      console.log("Respuesta del backend al obtener desafíos:", res.data);
       dispatch(obtenerDesafiosSuccess(res.data.desafios));
     } catch (error) {
       dispatch(

@@ -1,31 +1,27 @@
 ﻿import { BrowserRouter, Routes, Route } from "react-router";
 import NotFoundPage from "./pages/NotFoundPage";
 
-{
-  /* RUTAS ADMIN */
-}
+{/* RUTAS ADMIN */ }
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import CrearCategoriaZonaMuscularPage from "./pages/admin/CrearCategoriaZonaMuscularPage";
 import GestionarDesafiosPage from "./pages/admin/GestionarDesafiosPage";
 import AdminContainerPage from "./pages/AdminContainerPage";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
-//import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
 
-{
-  /* RUTAS PÚBLICAS */
-}
+{/* RUTAS PÚBLICAS */ }
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 
-{
-  /* RUTAS DE USER */
-}
+{/* RUTAS DE USER */ }
 import UserContainerPage from "./pages/UserContainerPage";
-import UserDashboardPage from "./pages/user/UserDashboardPage";
+import DashboardPage from "./pages/user/DashboardPage";
 import PerfilPage from "./pages/user/PerfilPage";
 import CrearCategoriaMuscularPage from "./pages/user/CrearCategoriaMuscPage";
 import GestionEjerciciosPage from "./pages/user/GestionEjercicioPage";
+
+
 
 function App() {
   return (
@@ -35,36 +31,28 @@ function App() {
           {/* RUTAS PÚBLICAS */}
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
+         
           {/* RUTAS ADMIN */}
           <Route
-            element={<AdminContainerPage />} /*element={<ProtectedRoute />}*/
-          >
+  element={
+    <ProtectedRoute allowedRoles={["admin"]}>
+      <AdminContainerPage />
+    </ProtectedRoute>
+  }
+>
             <Route path="/admin" element={<AdminDashboardPage />} />
-            <Route
-              path="/crear-categoria-zona-muscular"
-              element={<CrearCategoriaZonaMuscularPage />}
-            />
-            <Route
-              path="/gestionar-desafios"
-              element={<GestionarDesafiosPage />}
-            />
+            
           </Route>
+         
           {/* RUTAS DE USER */}
-          <Route element={<UserContainerPage />}>
-            <Route path="/dashboard" element={<UserDashboardPage />} />
+          <Route element={<ProtectedRoute allowedRoles={["user"]}>
+      <UserContainerPage />
+    </ProtectedRoute>} >
+
+            <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/perfil" element={<PerfilPage />} />
-            <Route
-              path="/crear-categoria-muscular"
-              element={<CrearCategoriaMuscularPage />}
-            />
-            <Route
-              path="/crear-categoria-zona-muscular"
-              element={<CrearCategoriaZonaMuscularPage />}
-            />
-            <Route
-              path="/gestionar-ejercicios"
-              element={<GestionEjerciciosPage />}
-            />
+            <Route path="/crear-categoria-muscular" element={<CrearCategoriaMuscularPage />} />
+            <Route path="/gestionar-ejercicios" element={<GestionEjerciciosPage />} />
           </Route>
 
           {/* RUTAS DE ERROR */}
