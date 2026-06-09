@@ -17,6 +17,8 @@ import VerDesafiosTabla from "../../components/tablas/VerDesafiosTabla";
 import CrearEjercicioForm from "../../components/user/formularios/CrearEjercicioForm";
 import VerEjerciciosTabla from "../../components/tablas/VerEjerciciosTabla";
 
+import GraficoEjerciciosPorCategoria from "../../components/user/GraficoEjerciciosPorCategoria";
+
 const UserDashboardPage = () => {
   return (
     <main className="dashboard-contenedor">
@@ -84,7 +86,7 @@ const UserDashboardPage = () => {
 
           {/* Gráfico */}
           <div className="mt-5">
-            <GraficoRutinas />
+            <GraficoEjerciciosPorCategoria />
           </div>
         </div>
 
