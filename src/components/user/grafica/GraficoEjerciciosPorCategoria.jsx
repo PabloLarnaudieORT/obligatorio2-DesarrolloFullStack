@@ -1,4 +1,4 @@
-import {
+﻿import {
   Chart,
   CategoryScale,
   LinearScale,
@@ -14,11 +14,12 @@ Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const GraficoEjerciciosPorCategoria = () => {
   const { listaDeEjercicios } = useSelector((state) => state.ejerciciosStore);
+  const ejercicios = Array.isArray(listaDeEjercicios) ? listaDeEjercicios : [];
 
   const ejerciciosPorCategoria = {};
 
-  listaDeEjercicios.forEach((ejercicio) => {
-    const categoria = ejercicio.categoriaMusculo?.nombre || "Sin categoría";
+  ejercicios.forEach((ejercicio) => {
+    const categoria = ejercicio.categoriaMusculo?.nombre || "Sin categoria";
 
     ejerciciosPorCategoria[categoria] =
       (ejerciciosPorCategoria[categoria] || 0) + 1;
@@ -47,7 +48,7 @@ const GraficoEjerciciosPorCategoria = () => {
       },
       title: {
         display: true,
-        text: "Ejercicios por categoría muscular",
+        text: "Ejercicios por categoria muscular",
         color: "#ffffff",
       },
     },
