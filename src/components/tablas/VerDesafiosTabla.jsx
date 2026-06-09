@@ -38,37 +38,37 @@ const VerDesafiosTabla = () => {
   useEffect(() => {
     obtenerListaDeDesafios();
   }, []);
-    return (
+  return (
     <div className="tarjeta w-100 mb-4" style={{ maxWidth: 950 }}>
-            <div className="table-responsive">
-                <table className="table table-dark table-hover table-sm align-middle text-center">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Fecha Creación</th>
-                            <th>Fecha Límite</th>
-                            <th>Puntos</th>
-                            <th>Categoría Zona Muscular</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+      <div className="table-responsive">
+        <table className="table table-dark table-hover table-sm align-middle text-center">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Fecha Creación</th>
+              <th>Fecha Límite</th>
+              <th>Puntos</th>
+              <th>Categoría Zona Muscular</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
             {loading && (
-                        <tr>
+              <tr>
                 <td colSpan="6">Cargando desafíos...</td>
-                        </tr>
+              </tr>
             )}
 
             {error && (
-                        <tr>
+              <tr>
                 <td colSpan="6" className="text-danger">
                   {error}
-                            </td>
-                        </tr>
+                </td>
+              </tr>
             )}
 
             {!loading && !error && desafiosObtenidos.length === 0 && (
-                        <tr>
+              <tr>
                 <td colSpan="6">No hay desafíos cargados</td>
               </tr>
             )}
@@ -86,21 +86,14 @@ const VerDesafiosTabla = () => {
                   <td>
                     {desafio.categoriaZonaMuscular?.nombreCategoriaZona ||
                       "Sin categoría"}
-                            </td>
-                        </tr>
+                  </td>
+                </tr>
               ))}
-                    </tbody>
-                </table>
-            </div>
-            <Paginacion 
-    paginaActual={pagina} 
-    totalPaginas={5} // Este número será dinámico cuando conectes con la API
-    onCambiarPagina={setPagina} 
-  />
-        </div>
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 };
 
 export default VerDesafiosTabla;
-
-export default VerDesafiosTabla
