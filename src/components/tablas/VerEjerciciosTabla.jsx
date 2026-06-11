@@ -11,7 +11,7 @@ import api from "../../api/api";
 import EliminarEjercicioForm from "../user/formularios/EliminarEjercicioForm";
 import EditarEjercicioForm from "../user/formularios/EditarEjercicioForm";
 
-const VerEjerciciosTabla = () => {
+const VerEjerciciosTabla = ({ actualizar }) => {
   const [pagina, setPagina] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(0);
   const dispatch = useDispatch();
@@ -40,6 +40,16 @@ const VerEjerciciosTabla = () => {
       }
     );
 
+    console.log(
+  "TOTAL PAGINAS:",
+  res.data.ejercicios.totalPages
+);
+
+console.log(
+  "TOTAL EJERCICIOS:",
+  res.data.ejercicios.total
+);
+
     setTotalPaginas(
       res.data.ejercicios.totalPages
     );
@@ -62,7 +72,7 @@ const VerEjerciciosTabla = () => {
 
   useEffect(() => {
     obtenerListaDeEjercicios();
-  }, [pagina]);
+  }, [pagina, actualizar]);
 
 
   const manejarEjercicioEliminado = async () => {
@@ -75,6 +85,8 @@ const VerEjerciciosTabla = () => {
   setEjercicioSeleccionado(null);
 };
 
+console.log("PAGINA:", pagina);
+console.log("TOTAL PAGINAS:", totalPaginas);
   return (
     <>
       <div className="tarjeta w-100 mb-4" style={{ maxWidth: 950 }}>

@@ -30,10 +30,7 @@ const CambioPlan = ({
 
         setPlan("premium");
 
-        localStorage.setItem(
-          "plan",
-          "premium"
-        );
+    
 
         alert(
           "¡Ahora sos usuario Premium!"

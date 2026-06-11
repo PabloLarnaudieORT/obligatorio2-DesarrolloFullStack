@@ -12,7 +12,7 @@ import api from "../../../api/api";
 import DropdownCategoriaMuscular from "../../dropdowns/DropdownCategoriaMuscular";
 import { jwtDecode } from "jwt-decode";
 
-const CrearEjercicioForm = () => {
+const CrearEjercicioForm = ({setActualizar}) => {
   const dispatch = useDispatch();
 
   const [mensajeExito, setMensajeExito] =
@@ -93,6 +93,11 @@ const CrearEjercicioForm = () => {
             .ejercicios.ejercicios
         )
       );
+
+      setActualizar(prev => !prev);
+      console.log(
+  resEjercicios.data.ejercicios.totalPages
+);
 
       setMensajeExito(
         "Ejercicio creado correctamente"

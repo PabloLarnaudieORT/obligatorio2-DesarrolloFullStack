@@ -15,18 +15,39 @@ import GraficoEjerciciosPorCategoria from "../../components/user/grafica/Grafico
 import { obtenerMiPerfil } from "../../features/userLogic/usuarioAction";
 
 const DashboardPage = () => {
+
+  const [actualizarRutinas,
+    setActualizarRutinas] =
+    useState(false);
+
+  const [zonaSeleccionada,
+    setZonaSeleccionada] =
+    useState("");
+
   const [plan, setPlan] = useState("");
 
   useEffect(() => {
     const cargarPlan = async () => {
       const resultado = await obtenerMiPerfil();
 
+    const cargarPlan = async () => {
+
+      const resultado =
+        await obtenerMiPerfil();
+
       if (resultado.success) {
-        setPlan(resultado.usuario.plan);
+
+        setPlan(
+          resultado.usuario.plan
+        );
+
       }
+
     };
+    }
 
     cargarPlan();
+
   }, []);
 
   return (
@@ -70,14 +91,24 @@ const DashboardPage = () => {
         <div className="row mt-5 g-4">
           <div className="col-lg-7">
             <h2>Crear Rutina</h2>
-            <CrearRutinaForm />
+            <CrearRutinaForm setActualizarRutinas={setActualizarRutinas} />
           </div>
         </div>
 
         <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
           <h2>Mis Rutinas</h2>
-          <FiltroZonaMuscular />
-          <VerRutinasTabla />
+
+          <FiltroZonaMuscular valor={zonaSeleccionada}
+            onChange={(e) =>
+              setZonaSeleccionada(
+                e.target.value
+              )
+            } />
+
+          <VerRutinasTabla actualizar={actualizarRutinas}
+            zonaSeleccionada={zonaSeleccionada} 
+            setActualizarRutinas={setActualizarRutinas}
+            />
 
           <div className="mt-5">
             <GraficoRutinas />
