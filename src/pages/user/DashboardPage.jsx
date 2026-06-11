@@ -2,7 +2,7 @@
 import FiltroZonaMuscular from "../../components/busqueda/FiltroZonaMuscular";
 import InformeUso from "../../components/user/InformeUso";
 import CambioPlan from "../../components/user/CambioPlan";
-import GraficoRutinas from "../../components/user/GraficoRutinas";
+//import GraficoRutinas from "../../components/user/GraficoRutinas";
 import CrearRutinaForm from "../../components/user/formularios/CrearRutinaForm";
 import CrearCategoriaZonaMuscularPageForm from "../../components/admin/formularios/cateogirasZonaMuscular/CrearCategoriaZonaMuscularForm";
 import CrearCatMuscForm from "../../components/user/formularios/CrearCatMuscForm";
@@ -20,6 +20,10 @@ const DashboardPage = () => {
     setActualizarRutinas] =
     useState(false);
 
+  const [actualizarEjercicios,
+    setActualizarEjercicios] =
+    useState(false);
+
   const [zonaSeleccionada,
     setZonaSeleccionada] =
     useState("");
@@ -30,24 +34,12 @@ const DashboardPage = () => {
     const cargarPlan = async () => {
       const resultado = await obtenerMiPerfil();
 
-    const cargarPlan = async () => {
-
-      const resultado =
-        await obtenerMiPerfil();
-
       if (resultado.success) {
-
-        setPlan(
-          resultado.usuario.plan
-        );
-
+        setPlan(resultado.usuario.plan);
       }
-
     };
-    }
 
     cargarPlan();
-
   }, []);
 
   return (
@@ -63,7 +55,7 @@ const DashboardPage = () => {
 
         <div className="row mt-5 g-4 align-items-start">
           <div className="col-lg-5">
-            <InformeUso plan={plan} />
+            <InformeUso plan={plan} actualizarRutinas={actualizarRutinas} />
           </div>
 
           <div className="col-lg-5">
@@ -74,17 +66,16 @@ const DashboardPage = () => {
         <div className="row mt-5 g-4">
           <div className="col-lg-7">
             <h2>Crear Ejercicio</h2>
-            <CrearEjercicioForm />
+            <CrearEjercicioForm setActualizar={setActualizarEjercicios} />
           </div>
         </div>
 
         <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
           <h2>Mis Ejercicios</h2>
-          <FiltroZonaMuscular />
-          <VerEjerciciosTabla />
+          <VerEjerciciosTabla actualizar={actualizarEjercicios} />
 
           <div className="mt-5">
-            <GraficoEjerciciosPorCategoria />
+            <GraficoEjerciciosPorCategoria actualizar={actualizarEjercicios} />
           </div>
         </div>
 
@@ -109,34 +100,8 @@ const DashboardPage = () => {
             zonaSeleccionada={zonaSeleccionada} 
             setActualizarRutinas={setActualizarRutinas}
             />
-
-          <div className="mt-5">
-            <GraficoRutinas />
-          </div>
         </div>
-
-        <div className="row mt-5 g-4">
-          <div className="col-lg-7">
-            <h2>Crear Musculo</h2>
-            <CrearCatMuscForm />
-          </div>
-        </div>
-
-        <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
-          <h2 className="mb-4">Crear Categoria Zona Muscular</h2>
-          <CrearCategoriaZonaMuscularPageForm />
-        </div>
-
-        <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
-          <h2>Desafios Disponibles</h2>
-          <VerDesafiosUserTabla />
-        </div>
-
-        <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
-          <h2 className="mb-4">Ver Desafios Personales</h2>
-          <VerDesafiosTabla />
-        </div>
-
+        
         <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
           <h2 className="mb-4">Crear Categoria Muscular</h2>
           <CrearCatMuscForm />
@@ -147,9 +112,14 @@ const DashboardPage = () => {
           <VerDesafiosUserTabla />
         </div>
 
+
       </section>
     </main>
   );
 };
 
 export default DashboardPage;
+
+
+
+

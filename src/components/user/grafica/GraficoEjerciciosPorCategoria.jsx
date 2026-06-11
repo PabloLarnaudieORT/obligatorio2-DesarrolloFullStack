@@ -8,13 +8,37 @@
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import api from "../../../api/api";
 
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const GraficoEjerciciosPorCategoria = () => {
-  const { listaDeEjercicios } = useSelector((state) => state.ejerciciosStore);
-  const ejercicios = Array.isArray(listaDeEjercicios) ? listaDeEjercicios : [];
+const GraficoEjerciciosPorCategoria = ({ actualizar }) => {
+  const [ejercicios, setEjercicios] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const cargarTodosLosEjercicios = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const res = await api.get("/ejercicios?limit=1000", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        setEjercicios(res.data.ejercicios.ejercicios || []);
+        setError(null);
+      } catch (error) {
+        setError(
+          error.response?.data?.message || "Error al cargar datos del grafico",
+        );
+      }
+    };
+
+    cargarTodosLosEjercicios();
+  }, [actualizar]);
 
   const ejerciciosPorCategoria = {};
 
@@ -70,7 +94,11 @@ const GraficoEjerciciosPorCategoria = () => {
 
   return (
     <div className="tarjeta w-100 mt-4" style={{ maxWidth: 700 }}>
-      <Bar data={data} options={options} />
+      {error ? (
+        <p className="text-danger">{error}</p>
+      ) : (
+        <Bar data={data} options={options} />
+      )}
     </div>
   );
 };
