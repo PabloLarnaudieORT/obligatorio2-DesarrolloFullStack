@@ -1,9 +1,9 @@
 ﻿import { useSelector } from "react-redux";
-const HeaderPage = ({ onMenuClick }) => {
 
-  const { usuario } = useSelector(
-  state => state.authStore
-);
+const HeaderPage = ({ onMenuClick }) => {
+  const { usuario } = useSelector((state) => state.authStore);
+
+  const nombreUsuario = usuario || localStorage.getItem("user") || "usuario";
 
   return (
     <header className="navbar">
@@ -11,15 +11,13 @@ const HeaderPage = ({ onMenuClick }) => {
         type="button"
         className="menu-hamburguesa"
         onClick={onMenuClick}
-        aria-label="Abrir o cerrar menú administrador"
+        aria-label="Abrir o cerrar menu administrador"
       >
-        ☰
+        Menu
       </button>
+
       <div className="logo">
-        <span>Bienvenido, {usuario}</span>
-        <span className="avatar" aria-label="Administrador">
-          👤
-        </span>
+        <span>Bienvenido, {nombreUsuario}</span>
       </div>
     </header>
   );

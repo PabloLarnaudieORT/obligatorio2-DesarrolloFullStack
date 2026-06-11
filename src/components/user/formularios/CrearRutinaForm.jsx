@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+﻿import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   obtenerEjerciciosStart,
-  obtenerEjerciciosSuccess,
   obtenerEjerciciosError,
 } from "../../../features/userLogic/ejerciciosSlice";
 import api from "../../../api/api";
@@ -22,9 +21,8 @@ const CrearRutinaForm = ({ setActualizarRutinas }) => {
   const [mensajeError, setMensajeError] =
     useState("");
 
-  const { listaDeEjercicios } = useSelector(
-    (state) => state.ejerciciosStore
-  );
+  const [ejerciciosDisponibles, setEjerciciosDisponibles] =
+    useState([]);
 
   const cargarEjercicios = async () => {
     dispatch(obtenerEjerciciosStart());
@@ -38,10 +36,8 @@ const CrearRutinaForm = ({ setActualizarRutinas }) => {
         },
       });
 
-      dispatch(
-        obtenerEjerciciosSuccess(
-          res.data.ejercicios.ejercicios
-        )
+      setEjerciciosDisponibles(
+        res.data.ejercicios.ejercicios || []
       );
     } catch (error) {
       dispatch(
@@ -52,7 +48,6 @@ const CrearRutinaForm = ({ setActualizarRutinas }) => {
       );
     }
   };
-
   useEffect(() => {
     cargarEjercicios();
   }, []);
@@ -131,7 +126,7 @@ const CrearRutinaForm = ({ setActualizarRutinas }) => {
             Ejercicios
           </label>
 
-          {listaDeEjercicios.map((ejercicio) => (
+          {ejerciciosDisponibles.map((ejercicio) => (
             <div
               key={ejercicio._id}
               className="form-check"
@@ -176,3 +171,4 @@ const CrearRutinaForm = ({ setActualizarRutinas }) => {
 };
 
 export default CrearRutinaForm;
+

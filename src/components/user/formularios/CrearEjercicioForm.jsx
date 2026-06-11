@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+﻿import { useDispatch } from "react-redux";
 import BotonDinamico from "../../botones/BotonDinamico";
 import { useForm } from "react-hook-form";
 import { useId, useState } from "react";
@@ -12,7 +12,7 @@ import api from "../../../api/api";
 import DropdownCategoriaMuscular from "../../dropdowns/DropdownCategoriaMuscular";
 import { jwtDecode } from "jwt-decode";
 
-const CrearEjercicioForm = ({setActualizar}) => {
+const CrearEjercicioForm = ({ setActualizar }) => {
   const dispatch = useDispatch();
 
   const [mensajeExito, setMensajeExito] =
@@ -94,7 +94,9 @@ const CrearEjercicioForm = ({setActualizar}) => {
         )
       );
 
-      setActualizar(prev => !prev);
+      if (setActualizar) {
+        setActualizar((prev) => !prev);
+      }
       console.log(
   resEjercicios.data.ejercicios.totalPages
 );
@@ -255,3 +257,4 @@ const CrearEjercicioForm = ({setActualizar}) => {
 };
 
 export default CrearEjercicioForm;
+
