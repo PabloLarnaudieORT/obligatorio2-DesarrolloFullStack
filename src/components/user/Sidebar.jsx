@@ -21,8 +21,6 @@ const Sidebar = ({ abierto }) => {
         <ul className="list-unstyled">
           <li><Link to="/dashboard" className="text-decoration-none acento">Homepage</Link></li>
           <li><Link to="/perfil" className="text-decoration-none text-reset">Mi Perfil</Link></li>
-          <li><Link to="/crear-categoria-muscular" className="text-decoration-none acento">Crear Categoría Muscular</Link></li>
-          <li><Link to="/gestionar-ejercicios" className="text-decoration-none text-reset">Gestionar Ejercicios</Link></li>
           <li className="mt-4"> <button onClick={cerrarSesion} className="btn btn-danger w-100">
             Cerrar sesión
           </button>

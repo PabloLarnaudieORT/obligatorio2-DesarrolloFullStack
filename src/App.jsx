@@ -18,8 +18,6 @@ import RegisterPage from "./pages/auth/RegisterPage";
 import UserContainerPage from "./pages/UserContainerPage";
 import DashboardPage from "./pages/user/DashboardPage";
 import PerfilPage from "./pages/user/PerfilPage";
-import CrearCategoriaMuscularPage from "./pages/user/CrearCategoriaMuscPage";
-import GestionEjerciciosPage from "./pages/user/GestionEjercicioPage";
 
 
 
@@ -51,8 +49,6 @@ function App() {
 
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/perfil" element={<PerfilPage />} />
-            <Route path="/crear-categoria-muscular" element={<CrearCategoriaMuscularPage />} />
-            <Route path="/gestionar-ejercicios" element={<GestionEjerciciosPage />} />
           </Route>
 
           {/* RUTAS DE ERROR */}
