@@ -1,10 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import { useSelector } from "react-redux";
 
 const Navbar = ({ alternarMenu }) => {
 
-  const usuario =
-    localStorage.getItem("user");
+  const { usuario } = useSelector(
+  state => state.authStore
+);
 
   return (
     <header className="navbar">

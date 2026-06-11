@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   obtenerEjerciciosStart,
@@ -13,90 +13,117 @@ import { crearRutinaCompleta } from "../../../features/userLogic/rutinaAction";
 import DropdownCategoriaZonaMuscular from "../../dropdowns/DropdownCategoriaZonaMuscular";
 
 
-const CrearRutinaForm = () => {
-const dispatch = useDispatch();
+const CrearRutinaForm = ({ setActualizarRutinas }) => {
+  const dispatch = useDispatch();
 
-const { listaDeEjercicios } = useSelector(
-  (state) => state.ejerciciosStore
-);
+  const [mensajeExito, setMensajeExito] =
+    useState("");
 
-const cargarEjercicios = async () => {
-  dispatch(obtenerEjerciciosStart());
+  const [mensajeError, setMensajeError] =
+    useState("");
 
-  try {
-    const token = localStorage.getItem("token");
+  const { listaDeEjercicios } = useSelector(
+    (state) => state.ejerciciosStore
+  );
 
-    const res = await api.get("/ejercicios?limit=1000", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  const cargarEjercicios = async () => {
+    dispatch(obtenerEjerciciosStart());
 
-    dispatch(
-      obtenerEjerciciosSuccess(
-        res.data.ejercicios.ejercicios
-      )
-    );
-  } catch (error) {
-    dispatch(
-      obtenerEjerciciosError(
-        error.response?.data?.message ||
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await api.get("/ejercicios?limit=1000", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      dispatch(
+        obtenerEjerciciosSuccess(
+          res.data.ejercicios.ejercicios
+        )
+      );
+    } catch (error) {
+      dispatch(
+        obtenerEjerciciosError(
+          error.response?.data?.message ||
           "Error al obtener ejercicios"
-      )
-    );
-  }
-};
+        )
+      );
+    }
+  };
 
-useEffect(() => {
-  cargarEjercicios();
-}, []);
+  useEffect(() => {
+    cargarEjercicios();
+  }, []);
 
   const {
-  register,
-  handleSubmit,
-  formState: {
-    isDirty,
-    isValid,
-    isSubmitting
-  }
-} = useForm({
-  mode: "onChange"
-});
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: {
+      isDirty,
+      isValid,
+      isSubmitting
+    }
+  } = useForm({
+    mode: "onChange"
+  });
 
-const onSubmit = async (data) => {
+  const ejerciciosSeleccionados =
+    watch("ejercicios") || [];
 
-  console.log("DATOS FORM RUTINA:");
-  console.log(data);
-  const resultado =
-    await crearRutinaCompleta(
-      data.categoriaZonaMuscular,
+  const hayEjercicios =
+    ejerciciosSeleccionados.length > 0;
+
+
+  const onSubmit = async (data) => {
+
+    console.log("DATOS FORM RUTINA:");
+    console.log(data);
+
+    const ejercicios = [].concat(
       data.ejercicios || []
     );
 
-  if (resultado.success) {
+    const resultado =
+      await crearRutinaCompleta(
+        data.categoriaZonaMuscular,
+        ejercicios
+      );
 
-    alert(
-      "Rutina creada correctamente"
-    );
+    if (resultado.success) {
+      setMensajeExito("Rutina creada correctamente");
 
-    window.location.reload();
+      setTimeout(() => {
+        setMensajeExito("");
+      }, 1000);
 
-  } else {
+      reset();
 
-    alert(resultado.error);
+      setActualizarRutinas(
+        prev => !prev
+      );
 
-  }
+    } else {
 
-};
+      setMensajeError(
+        resultado.error
+      );
+
+    }
+
+  };
 
   return (
     <div className="tarjeta">
 
       <form onSubmit={handleSubmit(onSubmit)}>
 
-     <DropdownCategoriaZonaMuscular
-  register={register}
-/>
+        <DropdownCategoriaZonaMuscular
+          register={register}
+        />
 
         <div className="mb-4">
 
@@ -126,9 +153,21 @@ const onSubmit = async (data) => {
 
         <BotonCrear
           isDirty={isDirty}
-          isValid={isValid}
+          isValid={isValid && hayEjercicios}
           isSubmitting={isSubmitting}
         />
+
+        {mensajeError && (
+          <p className="text-danger mt-2">
+            {mensajeError}
+          </p>
+        )}
+
+        {mensajeExito && (
+          <p className="text-success mt-2">
+            {mensajeExito}
+          </p>
+        )}
 
       </form>
 

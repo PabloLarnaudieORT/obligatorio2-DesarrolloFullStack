@@ -27,7 +27,7 @@ export const loginUsuario = (datosLogin) => {
 
       localStorage.setItem("token", token);
       localStorage.setItem("user", datosLogin.username);
-      localStorage.setItem("rol", decoded.rol);
+      
       
       return {
         token,
@@ -61,9 +61,7 @@ export const loginUsuario = (datosLogin) => {
   return (dispatch) => {
 
     localStorage.removeItem("token");
-    localStorage.removeItem("rol");
     localStorage.removeItem("user");
-    localStorage.removeItem("plan");
     dispatch(logout());
 
   };

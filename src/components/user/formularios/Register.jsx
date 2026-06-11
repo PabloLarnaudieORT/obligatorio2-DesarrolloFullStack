@@ -61,9 +61,7 @@ const Register = () => {
         "token",
         token
       );
-      localStorage.setItem(
-        "id",
-        decoded.id);
+      
 
       localStorage.setItem(
         "rol",
@@ -73,11 +71,6 @@ const Register = () => {
       localStorage.setItem(
         "user",
         data.username
-      );
-
-      localStorage.setItem(
-        "plan",
-        "plus"
       );
 
       navigate("/dashboard");

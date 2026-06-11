@@ -12,27 +12,35 @@ import { obtenerMiPerfil } from "../../features/userLogic/usuarioAction";
 
 const DashboardPage = () => {
 
+  const [actualizarRutinas,
+    setActualizarRutinas] =
+    useState(false);
+
+  const [zonaSeleccionada,
+    setZonaSeleccionada] =
+    useState("");
+
   const [plan, setPlan] = useState("");
   useEffect(() => {
 
-  const cargarPlan = async () => {
+    const cargarPlan = async () => {
 
-    const resultado =
-      await obtenerMiPerfil();
+      const resultado =
+        await obtenerMiPerfil();
 
-    if (resultado.success) {
+      if (resultado.success) {
 
-      setPlan(
-        resultado.usuario.plan
-      );
+        setPlan(
+          resultado.usuario.plan
+        );
 
-    }
+      }
 
-  };
+    };
 
-  cargarPlan();
+    cargarPlan();
 
-}, []);
+  }, []);
 
   return (
     <main className="dashboard-contenedor">
@@ -51,12 +59,14 @@ const DashboardPage = () => {
 
           <div className="col-lg-7">
             <h2>Crear Rutina</h2>
-            <CrearRutinaForm />
+            <CrearRutinaForm setActualizarRutinas={setActualizarRutinas} />
           </div>
 
           <div className="col-lg-5">
 
-            <InformeUso plan={plan} />
+            <InformeUso plan={plan} actualizarRutinas={
+              actualizarRutinas
+            } />
 
             <div className="mt-3">
               <CambioPlan
@@ -74,9 +84,17 @@ const DashboardPage = () => {
 
           <h2>Mis Rutinas</h2>
 
-          <FiltroZonaMuscular />
+          <FiltroZonaMuscular valor={zonaSeleccionada}
+            onChange={(e) =>
+              setZonaSeleccionada(
+                e.target.value
+              )
+            } />
 
-          <VerRutinasTabla />
+          <VerRutinasTabla actualizar={actualizarRutinas}
+            zonaSeleccionada={zonaSeleccionada} 
+            setActualizarRutinas={setActualizarRutinas}
+            />
 
           {/* Gráfico */}
           <div className="mt-5">
@@ -84,10 +102,10 @@ const DashboardPage = () => {
           </div>
 
           <div className="mt-5">
-  <h2>Desafíos Disponibles</h2>
+            <h2>Desafíos Disponibles</h2>
 
-  <VerDesafiosUserTabla />
-</div>
+            <VerDesafiosUserTabla />
+          </div>
 
         </div>
 
