@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+﻿import { useForm } from "react-hook-form";
 import BotonDinamico from "../../botones/BotonDinamico";
 import { useId } from "react";
 import { useDispatch } from "react-redux";
@@ -35,7 +35,7 @@ const EditarEjercicioForm = ({ ejercicio, onEditado }) => {
       peso: ejercicio.peso,
       repeticiones: ejercicio.repeticiones,
       series: ejercicio.series,
-      categoriaMusculo: ejercicio.categoriaMusculo?._id,
+      categoriaMusculo: ejercicio.categoriaMusculo?._id || "",
     },
   });
 
@@ -57,7 +57,7 @@ const EditarEjercicioForm = ({ ejercicio, onEditado }) => {
     } catch (error) {
       dispatch(
         editarEjerciciosError(
-          error.response?.data?.message || "Error al editar el desafío",
+          error.response?.data?.message || "Error al editar el desafÃ­o",
         ),
       );
     }
@@ -170,7 +170,7 @@ const EditarEjercicioForm = ({ ejercicio, onEditado }) => {
               <p className="text-danger mt-1">{errors.series.message}</p>
             )}
           </div>
-          <DropdownCategoriaMuscular register={register} errors={errors} />
+          <DropdownCategoriaMuscular register={register} errors={errors} required={false} />
           <BotonDinamico
             type="submit"
             isDirty={isDirty}
@@ -186,3 +186,4 @@ const EditarEjercicioForm = ({ ejercicio, onEditado }) => {
 };
 
 export default EditarEjercicioForm;
+

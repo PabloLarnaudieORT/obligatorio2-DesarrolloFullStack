@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import BotonDinamico from "../botones/BotonDinamico";
 import Paginacion from "../botones/Paginacion";
 import {
@@ -21,49 +21,44 @@ const VerEjerciciosTabla = () => {
   const [ejercicioAEliminarSeleccionado, setEjercicioAEliminarSeleccionado] =
     useState(null);
 
+  const [ejercicioAnalizado, setEjercicioAnalizado] = useState(null);
+  const [respuestaIA, setRespuestaIA] = useState("");
+  const [loadingIA, setLoadingIA] = useState(false);
+  const [errorIA, setErrorIA] = useState(null);
+
   const { listaDeEjercicios, loading, error } = useSelector(
     (state) => state.ejerciciosStore,
   );
 
+  const ejercicios = listaDeEjercicios ? listaDeEjercicios : [];
+
   const obtenerListaDeEjercicios = async () => {
-  dispatch(obtenerEjerciciosStart());
+    dispatch(obtenerEjerciciosStart());
 
-  try {
-    const token = localStorage.getItem("token");
+    try {
+      const token = localStorage.getItem("token");
 
-    const res = await api.get(
-      `/ejercicios?page=${pagina}`,
-      {
+      const res = await api.get(`/ejercicios?page=${pagina}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
-    );
+      });
 
-    setTotalPaginas(
-      res.data.ejercicios.totalPages
-    );
+      setTotalPaginas(res.data.ejercicios.totalPages);
 
-    dispatch(
-      obtenerEjerciciosSuccess(
-        res.data.ejercicios.ejercicios
-      )
-    );
-
-  } catch (error) {
-    dispatch(
-      obtenerEjerciciosError(
-        error.response?.data?.message ||
-        "Error al obtener los ejercicios"
-      )
-    );
-  }
-};
+      dispatch(obtenerEjerciciosSuccess(res.data.ejercicios.ejercicios));
+    } catch (error) {
+      dispatch(
+        obtenerEjerciciosError(
+          error.response?.data?.message || "Error al obtener los ejercicios",
+        ),
+      );
+    }
+  };
 
   useEffect(() => {
     obtenerListaDeEjercicios();
   }, [pagina]);
-
 
   const manejarEjercicioEliminado = async () => {
     await obtenerListaDeEjercicios();
@@ -71,9 +66,61 @@ const VerEjerciciosTabla = () => {
   };
 
   const manejarEjercicioEditado = async () => {
-  await obtenerListaDeEjercicios();
-  setEjercicioSeleccionado(null);
-};
+    await obtenerListaDeEjercicios();
+    setEjercicioSeleccionado(null);
+  };
+
+  const cerrarAnalisisIA = () => {
+    setEjercicioAnalizado(null);
+    setRespuestaIA("");
+    setErrorIA(null);
+    setLoadingIA(false);
+  };
+
+  const analizarEjercicioConIA = async (ejercicio) => {
+    setEjercicioAnalizado(ejercicio);
+    setRespuestaIA("");
+    setErrorIA(null);
+    setLoadingIA(true);
+
+    try {
+      const prompt = `
+Analiza el siguiente ejercicio de gimnasio y clasifica su exigencia como "baja", "media" o "alta".
+
+Datos:
+Nombre: ${ejercicio.nombreEjercicio}
+Tipo de peso: ${ejercicio.tipoDePeso}
+Peso: ${ejercicio.peso}
+Repeticiones: ${ejercicio.repeticiones}
+Series: ${ejercicio.series}
+Categoria muscular: ${ejercicio.categoriaMusculo?.nombre || "Sin categoria"}
+
+Responde exactamente en este formato:
+Exigencia: baja/media/alta
+Explicacion: una explicacion breve de maximo 2 lineas.
+`;
+
+      const res = await api.post("/ai-consultas", { prompt });
+      setRespuestaIA(res.data.final);
+    } catch (error) {
+      setErrorIA(
+        error.response?.data?.message ||
+          "Error al analizar el ejercicio con IA",
+      );
+    } finally {
+      setLoadingIA(false);
+    }
+  };
+
+  const obtenerExigenciaIA = (texto) => {
+    const match = texto.match(/Exigencia:\s*([^\n]+)/i);
+    return match?.[1]?.trim() || "Sin clasificar";
+  };
+
+  const obtenerExplicacionIA = (texto) => {
+    const match = texto.match(/Explicaci[oó]n:\s*([\s\S]*)/i);
+    return match?.[1]?.trim() || texto;
+  };
 
   return (
     <>
@@ -88,34 +135,34 @@ const VerEjerciciosTabla = () => {
                 <th>Repeticiones</th>
                 <th>Series</th>
                 <th>Fecha</th>
-                <th>Categoría músculo</th>
+                <th>Categoria musculo</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
               {loading && (
                 <tr>
-                  <td colSpan="6">Cargando ejercicios...</td>
+                  <td colSpan="8">Cargando ejercicios...</td>
                 </tr>
               )}
 
               {error && (
                 <tr>
-                  <td colSpan="6" className="text-danger">
+                  <td colSpan="8" className="text-danger">
                     {error}
                   </td>
                 </tr>
               )}
 
-              {!loading && !error && listaDeEjercicios.length === 0 && (
+              {!loading && !error && ejercicios.length === 0 && (
                 <tr>
-                  <td colSpan="6">No hay desafíos cargados</td>
+                  <td colSpan="8">No hay ejercicios cargados</td>
                 </tr>
               )}
 
               {!loading &&
                 !error &&
-                listaDeEjercicios.map((ejercicio) => (
+                ejercicios.map((ejercicio) => (
                   <tr key={ejercicio._id}>
                     <td>{ejercicio.nombreEjercicio}</td>
                     <td>{ejercicio.tipoDePeso}</td>
@@ -124,22 +171,29 @@ const VerEjerciciosTabla = () => {
                     <td>{ejercicio.series}</td>
                     <td>{new Date(ejercicio.fecha).toLocaleDateString()}</td>
                     <td>
-                      {ejercicio.categoriaMusculo?.nombre || "Sin categoría"}
+                      {ejercicio.categoriaMusculo?.nombre || "Sin categoria"}
                     </td>
                     <td>
-                      <BotonDinamico
-                        onClick={() => setEjercicioSeleccionado(ejercicio)}
-                      >
-                        Editar
-                      </BotonDinamico>
-                      <BotonDinamico
-                        onClick={() =>
-                          setEjercicioAEliminarSeleccionado(ejercicio)
-                        }
-                        classText="text-danger"
-                      >
-                        Eliminar
-                      </BotonDinamico>
+                      <div className="acciones-tabla">
+                        <BotonDinamico
+                          onClick={() => analizarEjercicioConIA(ejercicio)}
+                        >
+                          Analizar IA
+                        </BotonDinamico>
+                        <BotonDinamico
+                          onClick={() => setEjercicioSeleccionado(ejercicio)}
+                        >
+                          Editar
+                        </BotonDinamico>
+                        <BotonDinamico
+                          onClick={() =>
+                            setEjercicioAEliminarSeleccionado(ejercicio)
+                          }
+                          classText="text-danger"
+                        >
+                          Eliminar
+                        </BotonDinamico>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -152,9 +206,54 @@ const VerEjerciciosTabla = () => {
           onCambiarPagina={setPagina}
         />
       </div>
+
+      {ejercicioAnalizado && (
+        <div className="modal-backdrop modal-ia-backdrop">
+          <div className="modal-contenido modal-ia-contenido">
+            <button
+              type="button"
+              className="modal-cerrar modal-ia-cerrar"
+              onClick={cerrarAnalisisIA}
+            >
+              x
+            </button>
+
+            <div className="tarjeta w-100 modal-ia">
+              <div className="modal-ia-header">
+                <span>Analisis inteligente</span>
+                <h2>Analisis IA del Ejercicio</h2>
+              </div>
+
+              <p className="modal-ia-ejercicio">
+                <strong>Ejercicio:</strong> {ejercicioAnalizado.nombreEjercicio}
+              </p>
+
+              <div className="ia-datos-ejercicio">
+                <span>{ejercicioAnalizado.tipoDePeso}</span>
+                <span>{ejercicioAnalizado.peso} kg</span>
+                <span>{ejercicioAnalizado.series} series</span>
+                <span>{ejercicioAnalizado.repeticiones} reps</span>
+              </div>
+
+              {loadingIA && <p className="modal-ia-loading">Analizando ejercicio...</p>}
+
+              {errorIA && <p className="text-danger mt-1">{errorIA}</p>}
+
+              {respuestaIA && (
+                <div className="respuesta-ia">
+                  <div className="respuesta-ia-estado">
+                    <span>Exigencia</span>
+                    <strong>{obtenerExigenciaIA(respuestaIA)}</strong>
+                  </div>
+                  <p>{obtenerExplicacionIA(respuestaIA)}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {ejercicioSeleccionado && (
-        //Esto es para mostrar el formulario de edición, y le paso el desafío seleccionado
-        //Le agregamos un fondo oscuro para que se note que es un modal
         <div className="modal-backdrop">
           <div className="modal-contenido">
             <BotonDinamico
@@ -162,7 +261,7 @@ const VerEjerciciosTabla = () => {
               className="modal-cerrar"
               onClick={() => setEjercicioSeleccionado(null)}
             >
-              ×
+              x
             </BotonDinamico>
 
             <EditarEjercicioForm
@@ -174,8 +273,6 @@ const VerEjerciciosTabla = () => {
       )}
 
       {ejercicioAEliminarSeleccionado && (
-        //Esto es para mostrar el formulario de eliminación, y le paso el desafío seleccionado
-        //Le agregamos un fondo oscuro para que se note que es un modal
         <div className="modal-backdrop">
           <div className="modal-contenido">
             <BotonDinamico
@@ -183,7 +280,7 @@ const VerEjerciciosTabla = () => {
               className="modal-cerrar"
               onClick={() => setEjercicioAEliminarSeleccionado(null)}
             >
-              ×
+              x
             </BotonDinamico>
 
             <EliminarEjercicioForm
@@ -198,3 +295,4 @@ const VerEjerciciosTabla = () => {
 };
 
 export default VerEjerciciosTabla;
+

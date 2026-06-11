@@ -496,3 +496,192 @@ select.form-select {
 .campo::placeholder {
   color: #e0e0e0 !important; 
 }
+.acciones-tabla {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(7px);
+}
+
+.modal-contenido {
+  position: relative;
+  width: min(680px, 100%);
+}
+
+.modal-cerrar {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  z-index: 2;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.modal-ia h2,
+.modal-ia p,
+.modal-ia strong {
+  color: #ffffff;
+}
+
+.ia-datos-ejercicio {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.ia-datos-ejercicio span {
+  border: 1px solid #444;
+  border-radius: 5px;
+  padding: 6px 10px;
+  color: #ffffff;
+  background: #111;
+}
+
+.respuesta-ia {
+  white-space: pre-wrap;
+  margin: 0;
+  padding: 16px;
+  border-radius: 8px;
+  color: #ffffff;
+  background: #111;
+  border-left: 4px solid var(--amarillo);
+  font-family: var(--fuente-cuerpo);
+}
+
+/* Modal IA de ejercicios */
+.modal-ia-backdrop {
+  background: rgba(0, 0, 0, 0.68);
+  backdrop-filter: blur(9px);
+}
+
+.modal-ia-contenido {
+  width: min(760px, calc(100vw - 32px));
+}
+
+.modal-ia-cerrar {
+  top: 18px;
+  right: 18px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
+  background: #0b0b0b;
+  color: var(--blanco);
+  line-height: 1;
+}
+
+.modal-ia-cerrar:hover {
+  color: var(--amarillo);
+  border-color: var(--amarillo);
+}
+
+.modal-ia {
+  max-width: none !important;
+  padding: 34px 38px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(31, 31, 31, 0.98), rgba(12, 12, 12, 0.98));
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.6);
+}
+
+.modal-ia-header span {
+  display: inline-block;
+  margin-bottom: 6px;
+  color: var(--amarillo);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.modal-ia h2 {
+  margin: 0 44px 12px 0;
+  color: var(--blanco);
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.modal-ia-ejercicio {
+  margin-bottom: 14px;
+  color: var(--blanco);
+}
+
+.modal-ia-ejercicio strong {
+  color: var(--blanco);
+}
+
+.modal-ia .ia-datos-ejercicio {
+  margin: 16px 0 18px;
+}
+
+.modal-ia .ia-datos-ejercicio span {
+  min-width: 82px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 7px;
+  padding: 8px 12px;
+  color: var(--blanco);
+  background: #070707;
+  text-align: center;
+}
+
+.modal-ia-loading {
+  margin: 18px 0 0;
+  color: var(--blanco);
+}
+
+.modal-ia .respuesta-ia {
+  margin-top: 18px;
+  padding: 18px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 5px solid var(--amarillo);
+  border-radius: 10px;
+  color: var(--blanco);
+  background: #070707;
+  font-family: var(--fuente-cuerpo);
+  white-space: normal;
+}
+
+.respuesta-ia-estado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.respuesta-ia-estado span {
+  color: #bdbdbd;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.respuesta-ia-estado strong {
+  color: var(--amarillo);
+  font-size: 1.1rem;
+  text-transform: uppercase;
+}
+
+.modal-ia .respuesta-ia p {
+  margin: 0;
+  color: var(--blanco);
+  line-height: 1.55;
+}

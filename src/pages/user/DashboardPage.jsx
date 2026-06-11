@@ -91,8 +91,21 @@ const DashboardPage = () => {
 
         </div>
 
+<<<<<<< Updated upstream
 
 
+=======
+        <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
+          <h2 className="mb-4">Crear Categoria Muscular</h2>
+          <CrearCatMuscForm />
+        </div>
+
+        <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
+          <h2>Desafios Disponibles</h2>
+          <VerDesafiosUserTabla />
+        </div>
+
+>>>>>>> Stashed changes
       </section>
     </main>
   );
