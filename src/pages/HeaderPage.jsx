@@ -1,9 +1,10 @@
-﻿
+﻿import { useSelector } from "react-redux";
 const HeaderPage = ({ onMenuClick }) => {
 
-  const usuario =
-    localStorage.getItem("user");
-    
+  const { usuario } = useSelector(
+  state => state.authStore
+);
+
   return (
     <header className="navbar">
       <button

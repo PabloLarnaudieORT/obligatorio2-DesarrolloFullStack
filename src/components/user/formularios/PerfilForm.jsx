@@ -54,10 +54,7 @@ const PerfilForm = () => {
           resultado.usuario.fotoPerfil || ""
         );
 
-        localStorage.setItem(
-          "plan",
-          resultado.usuario.plan
-        );
+       
       }
     };
 

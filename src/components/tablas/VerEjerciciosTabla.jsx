@@ -11,7 +11,7 @@ import api from "../../api/api";
 import EliminarEjercicioForm from "../user/formularios/EliminarEjercicioForm";
 import EditarEjercicioForm from "../user/formularios/EditarEjercicioForm";
 
-const VerEjerciciosTabla = () => {
+const VerEjerciciosTabla = ({ actualizar }) => {
   const [pagina, setPagina] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(0);
   const dispatch = useDispatch();
@@ -58,7 +58,7 @@ const VerEjerciciosTabla = () => {
 
   useEffect(() => {
     obtenerListaDeEjercicios();
-  }, [pagina]);
+  }, [pagina, actualizar]);
 
   const manejarEjercicioEliminado = async () => {
     await obtenerListaDeEjercicios();
@@ -122,6 +122,8 @@ Explicacion: una explicacion breve de maximo 2 lineas.
     return match?.[1]?.trim() || texto;
   };
 
+console.log("PAGINA:", pagina);
+console.log("TOTAL PAGINAS:", totalPaginas);
   return (
     <>
       <div className="tarjeta w-100 mb-4" style={{ maxWidth: 950 }}>

@@ -36,10 +36,6 @@ const EliminarEjercicioForm = ({ ejercicio, onEliminado }) => {
         },
       });
 
-      console.log(
-        "EliminarEjercicioForm > eliminarEjercicio > res.data: ",
-        res.data,
-      );
 
       dispatch(eliminarEjerciciosSuccess(res.data));
       onEliminado();

@@ -61,7 +61,7 @@ const DropdownCategoriaZonaMuscular = ({ desafio, register }) => {
         id={categoriaZonaMuscularId}
         className="form-select campo"
         defaultValue={desafio?.categoriaZonaMuscular?._id || ""}
-        {...(register ? register("categoriaZonaMuscular") : {})}
+        {...(register ? register("categoriaZonaMuscular", {required: true,} ) : {})}
       >
         <option value="">Seleccioná una categoría</option>
         {categorias?.map((categoria) => (

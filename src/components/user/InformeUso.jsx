@@ -4,7 +4,7 @@ import {
   obtenerCantidadRutinas,
 } from "../../features/userLogic/rutinaAction";
 
-const InformeUso = ({ plan }) => {
+const InformeUso = ({ plan, actualizarRutinas }) => {
 
   const [rutinas, setRutinas] =
     useState(0);
@@ -31,7 +31,7 @@ const InformeUso = ({ plan }) => {
 
     cargarDatos();
 
-  }, []);
+  }, [actualizarRutinas]);
 
   const limite =
     plan === "premium"
