@@ -1,13 +1,17 @@
-import DesafiosActivos from "../../components/user/DesafiosActivos";
-import ProgresoGeneral from "../../components/user/InformeUso";
-import CrearRutinaForm from "../../components/user/formularios/CrearRutinaForm";
+﻿import { useEffect, useState } from "react";
 import FiltroZonaMuscular from "../../components/busqueda/FiltroZonaMuscular";
-import VerRutinasTabla from "../../components/tablas/VerRutinasTabla";
 import InformeUso from "../../components/user/InformeUso";
 import CambioPlan from "../../components/user/CambioPlan";
 import GraficoRutinas from "../../components/user/GraficoRutinas";
+import CrearRutinaForm from "../../components/user/formularios/CrearRutinaForm";
+import CrearCategoriaZonaMuscularPageForm from "../../components/admin/formularios/cateogirasZonaMuscular/CrearCategoriaZonaMuscularForm";
+import CrearCatMuscForm from "../../components/user/formularios/CrearCatMuscForm";
+import VerDesafiosTabla from "../../components/tablas/VerDesafiosTabla";
+import VerRutinasTabla from "../../components/tablas/VerRutinasTabla"
 import VerDesafiosUserTabla from "../../components/tablas/VerDesafiosUserTabla";
-import { useState, useEffect } from "react";
+import CrearEjercicioForm from "../../components/user/formularios/CrearEjercicioForm";
+import VerEjerciciosTabla from "../../components/tablas/VerEjerciciosTabla";
+import GraficoEjerciciosPorCategoria from "../../components/user/grafica/GraficoEjerciciosPorCategoria";
 import { obtenerMiPerfil } from "../../features/userLogic/usuarioAction";
 
 const DashboardPage = () => {
@@ -21,7 +25,10 @@ const DashboardPage = () => {
     useState("");
 
   const [plan, setPlan] = useState("");
+
   useEffect(() => {
+    const cargarPlan = async () => {
+      const resultado = await obtenerMiPerfil();
 
     const cargarPlan = async () => {
 
@@ -37,6 +44,7 @@ const DashboardPage = () => {
       }
 
     };
+    }
 
     cargarPlan();
 
@@ -45,43 +53,49 @@ const DashboardPage = () => {
   return (
     <main className="dashboard-contenedor">
       <section className="contenido-principal">
-
-        {/* Banner */}
         <div className="banner-home">
-          <h1>Transformá tu esfuerzo en progreso</h1>
+          <h1>Transforma tu esfuerzo en progreso</h1>
           <p>
-            Registrá tus entrenamientos, seguí tu evolución y superá tus límites.
+            Registra tus entrenamientos, segui tu evolucion y supera tus
+            limites.
           </p>
         </div>
 
-        {/* Crear rutina + uso del plan */}
-        <div className="row mt-5 g-4">
+        <div className="row mt-5 g-4 align-items-start">
+          <div className="col-lg-5">
+            <InformeUso plan={plan} />
+          </div>
 
+          <div className="col-lg-5">
+            <CambioPlan plan={plan} setPlan={setPlan} />
+          </div>
+        </div>
+
+        <div className="row mt-5 g-4">
+          <div className="col-lg-7">
+            <h2>Crear Ejercicio</h2>
+            <CrearEjercicioForm />
+          </div>
+        </div>
+
+        <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
+          <h2>Mis Ejercicios</h2>
+          <FiltroZonaMuscular />
+          <VerEjerciciosTabla />
+
+          <div className="mt-5">
+            <GraficoEjerciciosPorCategoria />
+          </div>
+        </div>
+
+        <div className="row mt-5 g-4">
           <div className="col-lg-7">
             <h2>Crear Rutina</h2>
             <CrearRutinaForm setActualizarRutinas={setActualizarRutinas} />
           </div>
-
-          <div className="col-lg-5">
-
-            <InformeUso plan={plan} actualizarRutinas={
-              actualizarRutinas
-            } />
-
-            <div className="mt-3">
-              <CambioPlan
-                plan={plan}
-                setPlan={setPlan}
-              />
-            </div>
-
-          </div>
-
         </div>
 
-        {/* Mis rutinas */}
         <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
-
           <h2>Mis Rutinas</h2>
 
           <FiltroZonaMuscular valor={zonaSeleccionada}
@@ -96,21 +110,32 @@ const DashboardPage = () => {
             setActualizarRutinas={setActualizarRutinas}
             />
 
-          {/* Gráfico */}
           <div className="mt-5">
             <GraficoRutinas />
           </div>
-
-          <div className="mt-5">
-            <h2>Desafíos Disponibles</h2>
-
-            <VerDesafiosUserTabla />
-          </div>
-
         </div>
 
+        <div className="row mt-5 g-4">
+          <div className="col-lg-7">
+            <h2>Crear Musculo</h2>
+            <CrearCatMuscForm />
+          </div>
+        </div>
 
+        <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
+          <h2 className="mb-4">Crear Categoria Zona Muscular</h2>
+          <CrearCategoriaZonaMuscularPageForm />
+        </div>
 
+        <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
+          <h2>Desafios Disponibles</h2>
+          <VerDesafiosUserTabla />
+        </div>
+
+        <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
+          <h2 className="mb-4">Ver Desafios Personales</h2>
+          <VerDesafiosTabla />
+        </div>
       </section>
     </main>
   );
