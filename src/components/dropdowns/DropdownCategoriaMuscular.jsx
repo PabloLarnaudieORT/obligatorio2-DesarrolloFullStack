@@ -54,7 +54,7 @@ const DropdownCategoriaMuscular = ({ register, errors, required = true }) => {
     <>
       <div className="mb-4">
         <label htmlFor={categoriaMuscularId} className="form-label">
-          CategorÃ­a Muscular
+          Categoría Muscular
         </label>
         <select
           id={categoriaMuscularId}
@@ -66,7 +66,7 @@ const DropdownCategoriaMuscular = ({ register, errors, required = true }) => {
             }),
           })}
         >
-          <option value="">SeleccionÃ¡ una categorÃ­a</option>
+          <option value="">Seleccioná una categoría</option>
           {listaDeCategoriasMusculos?.map((catMusc) => (
             <option key={catMusc._id} value={catMusc._id}>
               {catMusc.nombre}

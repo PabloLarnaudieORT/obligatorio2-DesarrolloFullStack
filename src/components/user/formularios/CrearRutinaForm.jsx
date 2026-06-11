@@ -12,7 +12,7 @@ import { crearRutinaCompleta } from "../../../features/userLogic/rutinaAction";
 import DropdownCategoriaZonaMuscular from "../../dropdowns/DropdownCategoriaZonaMuscular";
 
 
-const CrearRutinaForm = ({ setActualizarRutinas }) => {
+const CrearRutinaForm = ({ setActualizarRutinas, actualizarEjercicios }) => {
   const dispatch = useDispatch();
 
   const [mensajeExito, setMensajeExito] =
@@ -50,7 +50,7 @@ const CrearRutinaForm = ({ setActualizarRutinas }) => {
   };
   useEffect(() => {
     cargarEjercicios();
-  }, []);
+  }, [actualizarEjercicios]);
 
   const {
     register,
@@ -106,6 +106,10 @@ const CrearRutinaForm = ({ setActualizarRutinas }) => {
       setMensajeError(
         resultado.error
       );
+
+      setTimeout(() => {
+    setMensajeError("");
+  }, 2000);
 
     }
 

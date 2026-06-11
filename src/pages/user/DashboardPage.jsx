@@ -53,72 +53,109 @@ const DashboardPage = () => {
           </p>
         </div>
 
-        <div className="row mt-5 g-4 align-items-start">
-          <div className="col-lg-5">
+
+
+        <div className="row mt-3 g- align-items-start">
+          <div className="col-lg-6">
             <InformeUso plan={plan} actualizarRutinas={actualizarRutinas} />
           </div>
 
-          <div className="col-lg-5">
+          <div className="col-lg-6">
             <CambioPlan plan={plan} setPlan={setPlan} />
           </div>
         </div>
 
-        <div className="row mt-5 g-4">
-          <div className="col-lg-7">
-            <h2>Crear Ejercicio</h2>
-            <CrearEjercicioForm setActualizar={setActualizarEjercicios} />
-          </div>
-        </div>
 
-        <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
-          <h2>Mis Ejercicios</h2>
-          <VerEjerciciosTabla actualizar={actualizarEjercicios} />
+ <div className="row mt-4 g-3">
 
-          <div className="mt-5">
-            <GraficoEjerciciosPorCategoria actualizar={actualizarEjercicios} />
-          </div>
-        </div>
+  <div className="col-lg-7">
+    <h2>Crear Ejercicio</h2>
+    <CrearEjercicioForm
+      setActualizar={setActualizarEjercicios}
+    />
+  </div>
 
-        <div className="row mt-5 g-4">
-          <div className="col-lg-7">
-            <h2>Crear Rutina</h2>
-            <CrearRutinaForm setActualizarRutinas={setActualizarRutinas} />
-          </div>
-        </div>
+  <div className="col-lg-5">
+    <h2>Categoria Muscular</h2>
+    <CrearCatMuscForm />
+  </div>
 
-        <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
-          <h2>Mis Rutinas</h2>
+</div>
 
-          <FiltroZonaMuscular valor={zonaSeleccionada}
-            onChange={(e) =>
-              setZonaSeleccionada(
-                e.target.value
-              )
-            } />
+<div className="mt-4">
+  <h2>Mis Ejercicios</h2>
 
-          <VerRutinasTabla actualizar={actualizarRutinas}
-            zonaSeleccionada={zonaSeleccionada} 
-            setActualizarRutinas={setActualizarRutinas}
-            />
-        </div>
-        
-        <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
-          <h2 className="mb-4">Crear Categoria Muscular</h2>
-          <CrearCatMuscForm />
-        </div>
-
-        <div className="mt-5 mx-auto" style={{ maxWidth: 900 }}>
-          <h2>Desafios Disponibles</h2>
-          <VerDesafiosUserTabla />
-        </div>
+  <VerEjerciciosTabla
+    actualizar={actualizarEjercicios}
+    setActualizarEjercicios={setActualizarEjercicios}
+  />
+</div>
+     
 
 
-      </section>
-    </main>
+   
+
+  <div className="mt-5">
+    <h2>Crear Rutina</h2>
+
+    <CrearRutinaForm
+      setActualizarRutinas={setActualizarRutinas}
+      actualizarEjercicios={actualizarEjercicios}
+    />
+  </div>
+
+  <div className="mt-5">
+
+    <h2>Mis Rutinas</h2>
+
+    <FiltroZonaMuscular
+      valor={zonaSeleccionada}
+      onChange={(e) =>
+        setZonaSeleccionada(
+          e.target.value
+        )
+      }
+    />
+
+    <div className="mt-3">
+      <VerRutinasTabla
+        actualizar={actualizarRutinas}
+        zonaSeleccionada={zonaSeleccionada}
+        setActualizarRutinas={setActualizarRutinas}
+      />
+    </div>
+
+  </div>
+
+
+   
+
+
+  <div className="mt-5">
+  <h2>Estadísticas</h2>
+
+  <GraficoEjerciciosPorCategoria
+    actualizar={actualizarEjercicios}
+  />
+</div>
+
+  <div className="mt-5">
+  <h2>Desafíos Disponibles</h2>
+
+  <VerDesafiosUserTabla />
+</div>
+
+
+    </section>
+    </main >
   );
 };
 
 export default DashboardPage;
+
+
+
+
 
 
 
